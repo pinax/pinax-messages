@@ -44,3 +44,14 @@ class TestMessageViews(BaseTest):
     def test_create_message(self):
         response = self.client.get(reverse('inbox'))
         self.assertEqual(response.status_code, 200)
+        
+        data = {
+            'subject': 'The internet is down.',
+            'content': 'Does this affect any of our sites?',
+            'to_user': str(self.jtauber.id)
+        }
+        
+        response = self.client.post(reverse('message_create'), data)
+        self.assertEqual(response.status_code, 302)
+        
+        self.assertEqual(Thread.objects.inbox(self.jtauber).count(), 1)
