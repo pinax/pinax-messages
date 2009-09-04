@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.db import models
 
 from user_messages.managers import ThreadManager, MessageManager
-from user_messages.utils import cached_attr
+from user_messages.utils import cached_attribute
 
 class Thread(models.Model):
     subject = models.CharField(max_length=150)
@@ -14,7 +14,7 @@ class Thread(models.Model):
     objects = ThreadManager()
     
     @property
-    @cached_attr
+    @cached_attribute
     def latest_message(self):
         return self.messages.all()[0]
 
@@ -30,7 +30,7 @@ class UserThread(models.Model):
 class Message(models.Model):
     thread = models.ForeignKey(Thread, related_name="messages")
     
-    sender = models.ForeignKey(User)
+    sender = models.ForeignKey(User, related_name="sent_messages")
     sent_at = models.DateTimeField(default=datetime.now)
 
     content = models.TextField()
