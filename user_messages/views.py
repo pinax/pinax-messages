@@ -37,7 +37,8 @@ def thread_detail(request, thread_id,
 
 
 @login_required
-def message_create(request, user_id=None, template_name='user_messages/message_create.html'):
+def message_create(request, user_id=None, 
+    template_name='user_messages/message_create.html'):
     if user_id is not None:
         user_id = int(user_id)
     initial = {'to_user': user_id}

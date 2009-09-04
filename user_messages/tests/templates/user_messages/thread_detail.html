@@ -1,0 +1,5 @@
+{% for message in thread.messages.all %}
+    {{ message.sender }} -- {{ message.content }}
+{% endfor %}
+
+{{ form }}

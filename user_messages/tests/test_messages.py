@@ -63,3 +63,9 @@ class TestMessageViews(BaseTest):
         response = self.client.get(reverse('message_create', kwargs={'user_id': self.jtauber.id}))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'selected="selected">jtauber</option>')
+        
+        response = self.client.get(reverse('thread_detail', kwargs={
+            'thread_id': Thread.objects.inbox(self.jtauber).get().id
+        }))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Does this affect any of our sites?')
