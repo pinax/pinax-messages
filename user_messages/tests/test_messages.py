@@ -99,3 +99,4 @@ class TestMessageViews(BaseTest):
         }), data)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(Thread.objects.inbox(self.brosner).count(), 1)
+        self.assertEqual(Thread.objects.inbox(self.brosner).get().messages.count(), 2)
