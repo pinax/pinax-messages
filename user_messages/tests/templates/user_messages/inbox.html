@@ -1,0 +1,3 @@
+{% for thread in threads %}
+    {{ thread.subject }} -- {{ thread.latest_message.content|truncatewords:5 }}
+{% endfor %}

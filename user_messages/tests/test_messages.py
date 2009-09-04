@@ -1,3 +1,6 @@
+import os
+
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.test import TestCase
@@ -9,6 +12,13 @@ class BaseTest(TestCase):
         self.brosner = User.objects.create_superuser('brosner', 'brosner@brosner.brosner', 'abc123')
         self.jtauber = User.objects.create_superuser('jtauber', 'jtauber@jtauber.jtauber', 'abc123')
         self.client.login(username='brosner', password='abc123')
+        if hasattr(self, 'template_dirs'):
+            self._old_template_dirs = settings.TEMPLATE_DIRS
+            settings.TEMPLATE_DIRS = self.template_dirs
+    
+    def tearDown(self):
+        if hasattr(self, '_old_template_dirs'):
+            settings.TEMPLATE_DIRS = self._old_template_dirs
 
 class TestMessages(BaseTest):
     def test_messages(self):
@@ -24,6 +34,9 @@ class TestMessages(BaseTest):
 
 class TestMessageViews(BaseTest):
     urls = 'user_messages.tests.urls'
+    template_dirs = [
+        os.path.join(os.path.dirname(__file__), 'templates')
+    ]
     
     def tearDown(self):
         self.client.logout()
