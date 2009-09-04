@@ -12,6 +12,8 @@ class NewMessageForm(forms.Form):
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
         super(NewMessageForm, self).__init__(*args, **kwargs)
+        if self.initial.get('to_user') is not None:
+            self.fields['to_user'].queryset = self.fields['to_user'].queryset.filter(pk=self.initial['to_user'])
     
     def save(self):
         data = self.cleaned_data

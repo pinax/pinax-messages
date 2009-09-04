@@ -38,14 +38,17 @@ def thread_detail(request, thread_id,
     }, context_instance=RequestContext(request))
 
 @login_required
-def message_create(request, template_name='user_messages/message_create.html'):
+def message_create(request, user_id=None, template_name='user_messages/message_create.html'):
+    if user_id is not None:
+        user_id = int(user_id)
+    initial = {'to_user': user_id}
     if request.method == 'POST':
-        form = NewMessageForm(request.POST, user=request.user)
+        form = NewMessageForm(request.POST, user=request.user, initial=initial)
         if form.is_valid():
             msg = form.save()
             return HttpResponseRedirect(msg.get_absolute_url())
     else:
-        form = NewMessageForm(user=request.user)
+        form = NewMessageForm(user=request.user, initial=initial)
     return render_to_response(template_name, {
         'form': form
     }, context_instance=RequestContext(request))
