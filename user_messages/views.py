@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.template import RequestContext
 
-from user_messages.forms import MessageReplyForm
+from user_messages.forms import MessageReplyForm, NewMessageForm
 from user_messages.models import Thread, Message
 
 @login_required
@@ -33,5 +33,18 @@ def thread_detail(request, thread_id,
         thread.save()
     return render_to_response(template_name, {
         'thread': thread,
+        'form': form
+    }, context_instance=RequestContext(request))
+
+@login_required
+def message_create(request, template_name='user_messages/message_create.html'):
+    if request.method == 'POST':
+        form = NewMessageForm(request.POST, user=request.user)
+        if form.is_valid():
+            msg = form.save()
+            return HttpResponseRedirect(msg.get_absolute_url())
+    else:
+        form = NewMessageForm(user=request.user)
+    return render_to_response(template_name, {
         'form': form
     }, context_instance=RequestContext(request))

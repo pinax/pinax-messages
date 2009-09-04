@@ -38,3 +38,7 @@ class Message(models.Model):
     
     class Meta:
         ordering = ('sent_at',)
+    
+    @models.permalink
+    def get_absolute_url(self):
+        return ('thread_detail', (), {'thread_id': self.thread_id})
