@@ -3,7 +3,7 @@ from datetime import datetime
 from django.contrib.auth.models import User
 from django.db import models
 
-from user_messages.managers import ThreadManager
+from user_messages.managers import ThreadManager, MessageManager
 
 class Thread(models.Model):
     subject = models.CharField(max_length=150)
@@ -26,6 +26,8 @@ class Message(models.Model):
     sent_at = models.DateTimeField(default=datetime.now)
 
     content = models.TextField()
+    
+    objects = MessageManager()
     
     class Meta:
         ordering = ('sent_at',)
