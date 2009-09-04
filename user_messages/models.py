@@ -9,14 +9,14 @@ from user_messages.managers import ThreadManager, MessageManager
 class Thread(models.Model):
     subject = models.CharField(max_length=150)
     
-    user_1 = models.ForeignKey(User)
-    user_2 = moedls.ForeignKey(User)
+    to_user = models.ForeignKey(User)
+    from_user = moedls.ForeignKey(User)
     
-    user1_unread = models.BooleanField()
-    user2_unread = models.BooleanField()
+    to_user_unread = models.BooleanField()
+    from_user_unread = models.BooleanField()
     
-    user1_deleted = models.BooleanField()
-    user2_deleted = models.BooleanField()
+    to_user_deleted = models.BooleanField()
+    from_user_deleted = models.BooleanField()
     
     objects = ThreadManager()
 
