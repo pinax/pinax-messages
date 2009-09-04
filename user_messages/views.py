@@ -9,11 +9,13 @@ from django.views.decorators.http import require_POST
 from user_messages.forms import MessageReplyForm, NewMessageForm
 from user_messages.models import Thread, Message
 
+
 @login_required
 def inbox(request, template_name='user_messages/inbox.html'):
     threads = list(Thread.objects.inbox(request.user))
     threads.sort(key=lambda o: o.latest_message.sent_at, reversed=True)
     return render_to_response(template_name, {'threads': threads}, context_instance=RequestContext(request))
+
 
 @login_required
 def thread_detail(request, thread_id, 
@@ -37,6 +39,7 @@ def thread_detail(request, thread_id,
         'form': form
     }, context_instance=RequestContext(request))
 
+
 @login_required
 def message_create(request, user_id=None, template_name='user_messages/message_create.html'):
     if user_id is not None:
@@ -52,6 +55,7 @@ def message_create(request, user_id=None, template_name='user_messages/message_c
     return render_to_response(template_name, {
         'form': form
     }, context_instance=RequestContext(request))
+
 
 @login_required
 @require_POST

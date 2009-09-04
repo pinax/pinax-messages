@@ -1,5 +1,6 @@
 from functools import wraps
- 
+
+
 def cached_attribute(func):
     cache_name = '_%s' % func.__name__
     @wraps(func)
