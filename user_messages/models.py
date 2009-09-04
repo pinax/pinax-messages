@@ -5,6 +5,7 @@ from django.db import models
 
 from user_messages.managers import ThreadManager, MessageManager
 
+
 class Thread(models.Model):
     subject = models.CharField(max_length=150)
     
@@ -18,6 +19,7 @@ class Thread(models.Model):
     user2_deleted = models.BooleanField()
     
     objects = ThreadManager()
+
 
 class Message(models.Model):
     thread = models.ForeignKey(Thread)
