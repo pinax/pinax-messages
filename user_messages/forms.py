@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 
 from user_messages.models import Thread, Message
 
+
 class NewMessageForm(forms.Form):
     subject = forms.CharField()
     to_user = forms.ModelChoiceField(User.objects.all())
@@ -16,6 +17,7 @@ class NewMessageForm(forms.Form):
         data = self.cleaned_data
         return Message.objects.new_message(self.user, data['to_user'], 
             data['subject'], data['content'])
+
 
 class MessageReplyForm(forms.Form):
     content = forms.CharField(widget=forms.Textarea)
