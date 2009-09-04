@@ -58,3 +58,8 @@ class TestMessageViews(BaseTest):
         self.assertEqual(response.status_code, 302)
         
         self.assertEqual(Thread.objects.inbox(self.jtauber).count(), 1)
+        self.assertEqual(Thread.objects.inbox(self.brosner).count(), 0)
+        
+        response = self.client.get(reverse('message_create', kwargs={'user_id': self.jtauber.id}))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'selected="selected">jtauber</option>')
