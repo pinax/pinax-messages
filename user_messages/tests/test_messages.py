@@ -64,8 +64,10 @@ class TestMessageViews(BaseTest):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'selected="selected">jtauber</option>')
         
+        thread_id = Thread.objects.inbox(self.jtauber).get().id
+        
         response = self.client.get(reverse('thread_detail', kwargs={
-            'thread_id': Thread.objects.inbox(self.jtauber).get().id
+            'thread_id': thread_id,
         }))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Does this affect any of our sites?')
@@ -78,12 +80,22 @@ class TestMessageViews(BaseTest):
         self.assertContains(response, 'Does this affect')
         
         response = self.client.get(reverse('thread_detail', kwargs={
-            'thread_id': Thread.objects.inbox(self.jtauber).get().id,
+            'thread_id': thread_id,
         }))
         self.assertContains(response, 'Does this affect')
         
         response = self.client.post(reverse('thread_delete', kwargs={
-            'thread_id': Thread.objects.inbox(self.jtauber).get().id
+            'thread_id': thread_id,
         }))
         self.assertEqual(response.status_code, 302)
         self.assertEqual(Thread.objects.inbox(self.jtauber).count(), 0)
+        
+        data = {
+            'content': "Nope, the internet being down doesn't affect us.",
+        }
+        
+        response = self.client.post(reverse('thread_detail', kwargs={
+            'thread_id': thread_id,
+        }), data)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Thread.objects.inbox(self.brosner).count(), 1)

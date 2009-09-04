@@ -23,7 +23,7 @@ def thread_detail(request, thread_id,
     qs = Thread.objects.filter(userthread__user=request.user)
     thread = get_object_or_404(qs, pk=thread_id)
     if request.method == 'POST':
-        form = MessageReplyForm(request.POST, user=requst.user, thread=thread)
+        form = MessageReplyForm(request.POST, user=request.user, thread=thread)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse(inbox))
