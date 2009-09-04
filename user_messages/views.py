@@ -4,6 +4,7 @@ from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.template import RequestContext
+from django.views.decorators.http import require_POST
 
 from user_messages.forms import MessageReplyForm, NewMessageForm
 from user_messages.models import Thread, Message
@@ -48,3 +49,15 @@ def message_create(request, template_name='user_messages/message_create.html'):
     return render_to_response(template_name, {
         'form': form
     }, context_instance=RequestContext(request))
+
+@login_required
+@require_POST
+def thread_delete(request, thread_id):
+    qs = Thread.objects.filter(Q(to_user=request.user) | Q(from_user=request.user))
+    thread = get_object_or_404(qs, pk=thread_id)
+    if thread.to_user == request.user:
+        thread.to_user_deleted = True
+    else:
+        thread.from_user_deleted = True
+    thread.save()
+    return HttpResponseRedirect(reverse(inbox))
