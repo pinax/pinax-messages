@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.db import models
 
 from user_messages.managers import ThreadManager, MessageManager
-
+from user_messages.utils import cached_attr
 
 class Thread(models.Model):
     subject = models.CharField(max_length=150)
@@ -19,6 +19,11 @@ class Thread(models.Model):
     from_user_deleted = models.BooleanField()
     
     objects = ThreadManager()
+    
+    @property
+    @cached_attr
+    def latest_message(self):
+        return self.messages.all()[0]
 
 
 class Message(models.Model):
