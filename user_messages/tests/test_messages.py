@@ -13,4 +13,8 @@ def test_inbox():
     
     assert_equal(Thread.objects.inbox(brosner).count(), 0)
     assert_equal(Thread.objects.inbox(jtauber).count(), 1)
-    assert_equal(3, 2)
+    
+    Message.objects.new_reply(Thread.objects.inbox(jtauber)[0], jtauber, 'Yes, I am.')
+    
+    assert_equal(Thread.objects.inbox(brosner).count(), 1)
+    assert_equal(Thread.objects.inbox(jtauber).count(), 1)
