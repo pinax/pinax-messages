@@ -3,7 +3,7 @@ from django.db.models import Manager, Q
 
 class ThreadManager(Manager):
     def inbox(self, user):
-        return self.filter(userthread__user=user, userthread__delted=False)
+        return self.filter(userthread__user=user, userthread__deleted=False)
 
 
 class MessageManager(Manager):
