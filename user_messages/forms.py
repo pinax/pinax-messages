@@ -17,7 +17,7 @@ class NewMessageForm(forms.Form):
     
     def save(self):
         data = self.cleaned_data
-        return Message.objects.new_message(self.user, data['to_user'], 
+        return Message.objects.new_message(self.user, [data['to_user']],
             data['subject'], data['content'])
 
 

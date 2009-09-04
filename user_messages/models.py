@@ -9,14 +9,7 @@ from user_messages.utils import cached_attr
 class Thread(models.Model):
     subject = models.CharField(max_length=150)
     
-    to_user = models.ForeignKey(User)
-    from_user = moedls.ForeignKey(User)
-    
-    to_user_unread = models.BooleanField()
-    from_user_unread = models.BooleanField()
-    
-    to_user_deleted = models.BooleanField()
-    from_user_deleted = models.BooleanField()
+    users = models.ManyToManyField(User, through='UserThread')
     
     objects = ThreadManager()
     
@@ -24,6 +17,14 @@ class Thread(models.Model):
     @cached_attr
     def latest_message(self):
         return self.messages.all()[0]
+
+
+class UserThread(models.Model):
+    thread = models.ForeignKey(Thread)
+    user = models.ForeignKey(User)
+    
+    unread = models.BooleanField()
+    deleted = models.BooleanField()
 
 
 class Message(models.Model):
