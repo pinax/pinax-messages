@@ -9,8 +9,10 @@ from user_messages.models import Thread, Message
 
 class BaseTest(TestCase):
     def setUp(self):
-        self.brosner = User.objects.create_superuser('brosner', 'brosner@brosner.brosner', 'abc123')
-        self.jtauber = User.objects.create_superuser('jtauber', 'jtauber@jtauber.jtauber', 'abc123')
+        self.brosner = User.objects.create_superuser('brosner', 
+            'brosner@brosner.brosner', 'abc123')
+        self.jtauber = User.objects.create_superuser('jtauber', 
+            'jtauber@jtauber.jtauber', 'abc123')
         self.client.login(username='brosner', password='abc123')
         if hasattr(self, 'template_dirs'):
             self._old_template_dirs = settings.TEMPLATE_DIRS
@@ -22,12 +24,14 @@ class BaseTest(TestCase):
 
 class TestMessages(BaseTest):
     def test_messages(self):
-        Message.objects.new_message(self.brosner, [self.jtauber], 'Really?', "You can't be serious")
+        Message.objects.new_message(self.brosner, [self.jtauber], 'Really?', 
+            "You can't be serious")
         
         self.assertEqual(Thread.objects.inbox(self.brosner).count(), 0)
         self.assertEqual(Thread.objects.inbox(self.jtauber).count(), 1)
         
-        Message.objects.new_reply(Thread.objects.inbox(self.jtauber)[0], self.jtauber, 'Yes, I am.')
+        Message.objects.new_reply(Thread.objects.inbox(self.jtauber)[0], 
+            self.jtauber, 'Yes, I am.')
         
         self.assertEqual(Thread.objects.inbox(self.brosner).count(), 1)
         self.assertEqual(Thread.objects.inbox(self.jtauber).count(), 1)
@@ -60,7 +64,9 @@ class TestMessageViews(BaseTest):
         self.assertEqual(Thread.objects.inbox(self.jtauber).count(), 1)
         self.assertEqual(Thread.objects.inbox(self.brosner).count(), 0)
         
-        response = self.client.get(reverse('message_create', kwargs={'user_id': self.jtauber.id}))
+        response = self.client.get(reverse('message_create', kwargs={
+            'user_id': self.jtauber.id
+        }))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'selected="selected">jtauber</option>')
         
