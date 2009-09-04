@@ -1,33 +1,30 @@
 from django import forms
+from django.contrib.auth.models import User
 
 from user_messages.models import Thread, Message
 
-class NewMessageForm(forms.ModelForm):
+class NewMessageForm(forms.Form):
     subject = forms.CharField()
-    
-    class Meta:
-        model = Message
-        fields = ('to_user', 'content')
-    
+    to_user = forms.ModelChoiceField(User.objects.all())
+    content = forms.CharField(widget=forms.Textarea)
+
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
         super(NewMessageForm, self).__init__(*args, **kwargs)
     
-    def save(self, commit=True):
-        obj = super(NewMessageForm, self).save(commit=False)
-        obj.from_user = self.user
-        # TODO: the Thread get's saved whether or not commit=True, is there a 
-        # better way?
-        obj.thread = Thread.objects.create(subject=self.cleaned_data['subject'])
-        if commit:
-            obj.save()
-        return obj
+    def save(self):
+        data = self.cleaned_data
+        return Message.objects.new_message(self.user, data['to_user'], 
+            data['subject'], data['content'])
 
-class MessageReplyForm(forms.ModelForm):
+class MessageReplyForm(forms.Form):
+    content = forms.CharField(widget=forms.Textarea)
+    
     def __init__(self, *args, **kwargs):
         self.thread = kwargs.pop('thread')
         self.user = kwargs.pop('user')
         super(MessageReplyForm, self).__init__(*args, **kwargs)
     
-    def save(self, commit=True):
-        obj = super(MessageReplyForm).save(commit=False)
+    def save(self):
+        return Message.objects.new_reply(self.thread, self.user, 
+            self.cleaned_data['content'])
