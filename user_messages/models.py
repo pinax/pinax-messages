@@ -22,7 +22,7 @@ class Thread(models.Model):
 
 
 class Message(models.Model):
-    thread = models.ForeignKey(Thread)
+    thread = models.ForeignKey(Thread, related_name="messages")
     
     sender = models.ForeignKey(User)
     sent_at = models.DateTimeField(default=datetime.now)
