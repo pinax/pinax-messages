@@ -16,6 +16,9 @@ def thread_detail(request, thread_id,
     template_name='user_messages/thread_detail.html'):
     qs = Thread.objects.filter(Q(to_user=request.user) | Q(from_user=request.user))
     thread = get_object_or_404(qs, pk=thread_id)
+    if request.user == thread.to_user:
+        thread.to_user_unread = False
+    else:
+        thread.from_user_unread = False
+    thread.save()
     return render_to_response(template_name, {'thread': thread}, context_instance=RequestContext(request))
-
-
