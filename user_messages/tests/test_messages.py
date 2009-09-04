@@ -45,6 +45,9 @@ class TestMessageViews(BaseTest):
         response = self.client.get(reverse('inbox'))
         self.assertEqual(response.status_code, 200)
         
+        response = self.client.get(reverse('message_create'))
+        self.assertEqual(response.status_code, 200)
+        
         data = {
             'subject': 'The internet is down.',
             'content': 'Does this affect any of our sites?',
