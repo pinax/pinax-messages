@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.template import RequestContext
 
@@ -13,5 +14,8 @@ def inbox(request, template_name='user_messages/inbox.html'):
 @login_required
 def thread_detail(request, thread_id, 
     template_name='user_messages/thread_detail.html'):
-    thread = get_object_or_404(Thread, pk=thread_id)
+    qs = Thread.objects.filter(Q(to_user=request.user) | Q(from_user=request.user))
+    thread = get_object_or_404(qs, pk=thread_id)
     return render_to_response(template_name, {'thread': thread}, context_instance=RequestContext(request))
+
+
