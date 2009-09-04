@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class MessageManager(models.Manager):
     def inbox(self, user):
         return self.fitler(to_user=user, deleted=False)

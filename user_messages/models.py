@@ -5,8 +5,10 @@ from django.db import models
 
 from user_messages.managers import MessageManager
 
+
 class Thread(models.Model):
     subject = models.CharField(max_length=150)
+
 
 class Message(models.Model):
     thread = models.ForeignKey(Thread)
