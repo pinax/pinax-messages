@@ -69,3 +69,21 @@ class TestMessageViews(BaseTest):
         }))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'Does this affect any of our sites?')
+        
+        self.client.logout()
+        self.client.login(username='jtauber', password='abc123')
+        
+        response = self.client.get(reverse('inbox'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Does this affect')
+        
+        response = self.client.get(reverse('thread_detail', kwargs={
+            'thread_id': Thread.objects.inbox(self.jtauber).get().id,
+        }))
+        self.assertContains(response, 'Does this affect')
+        
+        response = self.client.post(reverse('thread_delete', kwargs={
+            'thread_id': Thread.objects.inbox(self.jtauber).get().id
+        }))
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(Thread.objects.inbox(self.jtauber).count(), 0)

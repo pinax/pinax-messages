@@ -59,5 +59,5 @@ def message_create(request, user_id=None,
 def thread_delete(request, thread_id):
     qs = Thread.objects.filter(userthread__user=request.user)
     thread = get_object_or_404(qs, pk=thread_id)
-    thread.userthread_set.filter(user=request.user).update(delted=True)
+    thread.userthread_set.filter(user=request.user).update(deleted=True)
     return HttpResponseRedirect(reverse(inbox))
