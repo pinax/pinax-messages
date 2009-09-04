@@ -1,12 +1,5 @@
-from django.db import models
+from django.db.models import Manager, Q
 
-class MessageManager(models.Manager):
+class ThreadManager(Manager):
     def inbox(self, user):
-        return self.fitler(to_user=user, deleted=False)
-    
-    def thread(self, message_id):
-        """
-        Returns all the messages in the Thread for a given message.
-        """
-        msg = self.select_related('thread').get(pk=message_id)
-        return msg.thread.messages.all()
+        return self.filter(Q(user_1=user, user1_deleted=False) | Q(user_2=user, user2_deleted=False))
