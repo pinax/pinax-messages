@@ -13,6 +13,10 @@ class Thread(models.Model):
     
     objects = ThreadManager()
     
+    @models.permalink
+    def get_absolute_url(self):
+        return ('messages_message_lightbox', (self.id,))
+    
     @property
     @cached_attribute
     def latest_message(self):
@@ -42,4 +46,4 @@ class Message(models.Model):
     
     @models.permalink
     def get_absolute_url(self):
-        return ('thread_detail', (), {'thread_id': self.thread_id})
+        return ('messages_message_lightbox', (self.thread_id,))

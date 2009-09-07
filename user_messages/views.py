@@ -26,7 +26,7 @@ def thread_detail(request, thread_id,
         form = MessageReplyForm(request.POST, user=request.user, thread=thread)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect(reverse(inbox))
+            return HttpResponseRedirect(reverse('messages_inbox'))
     else:
         form = MessageReplyForm(user=request.user, thread=thread)
         thread.userthread_set.filter(user=request.user).update(unread=False)
@@ -60,4 +60,4 @@ def thread_delete(request, thread_id):
     qs = Thread.objects.filter(userthread__user=request.user)
     thread = get_object_or_404(qs, pk=thread_id)
     thread.userthread_set.filter(user=request.user).update(deleted=True)
-    return HttpResponseRedirect(reverse(inbox))
+    return HttpResponseRedirect(reverse('messages_inbox'))
