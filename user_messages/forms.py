@@ -13,8 +13,9 @@ class NewMessageForm(forms.Form):
         self.user = kwargs.pop('user')
         super(NewMessageForm, self).__init__(*args, **kwargs)
         if self.initial.get('to_user') is not None:
-            self.fields['to_user'].queryset = self.fields['to_user'].queryset.filter(pk=self.initial['to_user'])
-    
+            qs = self.fields['to_user'].queryset.filter(pk=self.initial['to_user'])
+            self.fields['to_user'].queryset = qs
+
     def save(self):
         data = self.cleaned_data
         return Message.objects.new_message(self.user, [data['to_user']],
@@ -23,12 +24,12 @@ class NewMessageForm(forms.Form):
 
 class MessageReplyForm(forms.Form):
     content = forms.CharField(widget=forms.Textarea)
-    
+
     def __init__(self, *args, **kwargs):
         self.thread = kwargs.pop('thread')
         self.user = kwargs.pop('user')
         super(MessageReplyForm, self).__init__(*args, **kwargs)
-    
+
     def save(self):
-        return Message.objects.new_reply(self.thread, self.user, 
+        return Message.objects.new_reply(self.thread, self.user,
             self.cleaned_data['content'])

@@ -14,11 +14,12 @@ from user_messages.models import Thread, Message
 def inbox(request, template_name='user_messages/inbox.html'):
     threads = list(Thread.objects.inbox(request.user))
     threads.sort(key=lambda o: o.latest_message.sent_at, reverse=True)
-    return render_to_response(template_name, {'threads': threads}, context_instance=RequestContext(request))
+    return render_to_response(template_name, {'threads': threads},
+        context_instance=RequestContext(request))
 
 
 @login_required
-def thread_detail(request, thread_id, 
+def thread_detail(request, thread_id,
     template_name='user_messages/thread_detail.html'):
     qs = Thread.objects.filter(userthread__user=request.user)
     thread = get_object_or_404(qs, pk=thread_id)
@@ -37,7 +38,7 @@ def thread_detail(request, thread_id,
 
 
 @login_required
-def message_create(request, user_id=None, 
+def message_create(request, user_id=None,
     template_name='user_messages/message_create.html'):
     if user_id is not None:
         user_id = int(user_id)
