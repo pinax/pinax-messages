@@ -42,6 +42,8 @@ def message_create(request, user_id=None,
     template_name='user_messages/message_create.html'):
     if user_id is not None:
         user_id = int(user_id)
+    elif 'to_user' in request.GET and request.GET['to_user'].isdigit():
+        user_id = int(request.GET['to_user'])
     initial = {'to_user': user_id}
     if request.method == 'POST':
         form = NewMessageForm(request.POST, user=request.user, initial=initial)
