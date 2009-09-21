@@ -1,4 +1,7 @@
-from functools import wraps
+try:
+    from functools import wraps
+except ImportError:
+    from django.utils.functional import wraps  # Python 2.4 fallback.
 
 
 def cached_attribute(func):
