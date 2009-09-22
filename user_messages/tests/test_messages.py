@@ -44,6 +44,15 @@ class TestMessages(BaseTest):
             "Indeed I do")
         self.assertEqual(Thread.objects.get(pk=thread.pk).first_message.content,
             "You can't be serious")
+    
+    def test_ordered(self):
+        t1 = Message.objects.new_message(self.brosner, [self.jtauber], "Subject",
+            "A test message").thread
+        t2 = Message.objects.new_message(self.brosner, [self.jtauber], "Another",
+            "Another message").thread
+        t3 = Message.objects.new_message(self.brosner, [self.jtauber], "Pwnt",
+            "Haha I'm spamming your inbox").thread
+        self.assertEqual(Thread.ordered([t2, t1, t3]), [t3, t2, t1])
 
 class TestMessageViews(BaseTest):
     urls = 'user_messages.tests.urls'

@@ -26,6 +26,16 @@ class Thread(models.Model):
     @cached_attribute
     def latest_message(self):
         return self.messages.order_by('-sent_at')[0]
+    
+    @classmethod
+    def ordered(cls, objs):
+        """
+        Returns the iterable ordered the correct way, this is a class method 
+        because we don't know what the type of the iterable will be.
+        """
+        objs = list(objs)
+        objs.sort(key=lambda o: o.latest_message.sent_at, reverse=True)
+        return objs
 
 
 class UserThread(models.Model):

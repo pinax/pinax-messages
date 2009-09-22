@@ -12,8 +12,7 @@ from user_messages.models import Thread, Message
 
 @login_required
 def inbox(request, template_name='user_messages/inbox.html'):
-    threads = list(Thread.objects.inbox(request.user))
-    threads.sort(key=lambda o: o.latest_message.sent_at, reverse=True)
+    threads = Thread.ordered(Thread.objects.inbox(request.user))
     return render_to_response(template_name, {'threads': threads},
         context_instance=RequestContext(request))
 
