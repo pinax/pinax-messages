@@ -4,6 +4,9 @@ from django.db.models import Manager, Q
 class ThreadManager(Manager):
     def inbox(self, user):
         return self.filter(userthread__user=user, userthread__deleted=False)
+    
+    def unread(self, user):
+        return self.filter(userthread__user=user, userthread__deleted=False, userthread__unread=True)
 
 
 class MessageManager(Manager):
