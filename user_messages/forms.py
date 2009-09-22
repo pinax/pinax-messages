@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 
-from user_messages.models import Thread, Message
+from user_messages.models import Message
 
 
 class NewMessageForm(forms.Form):

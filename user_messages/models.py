@@ -61,4 +61,4 @@ class Message(models.Model):
     
     @models.permalink
     def get_absolute_url(self):
-        return ('messages_message_lightbox', (self.thread_id,))
+        return self.thread.get_absolute_url()

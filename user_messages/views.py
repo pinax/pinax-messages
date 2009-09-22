@@ -1,13 +1,12 @@
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
-from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
 from django.views.decorators.http import require_POST
 
 from user_messages.forms import MessageReplyForm, NewMessageForm
-from user_messages.models import Thread, Message
+from user_messages.models import Thread
 
 
 @login_required
