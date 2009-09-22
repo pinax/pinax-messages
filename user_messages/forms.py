@@ -7,7 +7,7 @@ from user_messages.models import Thread, Message
 class NewMessageForm(forms.Form):
     subject = forms.CharField()
     to_user = forms.ModelChoiceField(User.objects.all())
-    content = forms.CharField(widget=forms.Textarea)
+    content = forms.CharField(widget=forms.Textarea(attrs={'class': 'medium'}))
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
@@ -23,7 +23,7 @@ class NewMessageForm(forms.Form):
 
 
 class MessageReplyForm(forms.Form):
-    content = forms.CharField(widget=forms.Textarea)
+    content = forms.CharField(widget=forms.Textarea(attrs={'class': 'medium'}))
 
     def __init__(self, *args, **kwargs):
         self.thread = kwargs.pop('thread')
