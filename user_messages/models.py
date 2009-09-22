@@ -19,6 +19,11 @@ class Thread(models.Model):
     
     @property
     @cached_attribute
+    def first_message(self):
+        return self.messages.all()[0]
+    
+    @property
+    @cached_attribute
     def latest_message(self):
         return self.messages.order_by('-sent_at')[0]
 
