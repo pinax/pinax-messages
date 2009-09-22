@@ -19,16 +19,17 @@ def inbox(request, template_name='user_messages/inbox.html'):
 
 @login_required
 def thread_detail(request, thread_id,
-    template_name='user_messages/thread_detail.html'):
+    template_name='user_messages/thread_detail.html', 
+    form_class=MessageReplyForm):
     qs = Thread.objects.filter(userthread__user=request.user)
     thread = get_object_or_404(qs, pk=thread_id)
     if request.method == 'POST':
-        form = MessageReplyForm(request.POST, user=request.user, thread=thread)
+        form = form_class(request.POST, user=request.user, thread=thread)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('messages_inbox'))
     else:
-        form = MessageReplyForm(user=request.user, thread=thread)
+        form = form_class(user=request.user, thread=thread)
         thread.userthread_set.filter(user=request.user).update(unread=False)
     return render_to_response(template_name, {
         'thread': thread,
@@ -38,19 +39,20 @@ def thread_detail(request, thread_id,
 
 @login_required
 def message_create(request, user_id=None,
-    template_name='user_messages/message_create.html'):
+    template_name='user_messages/message_create.html',
+    form_class=NewMessageForm):
     if user_id is not None:
         user_id = int(user_id)
     elif 'to_user' in request.GET and request.GET['to_user'].isdigit():
         user_id = int(request.GET['to_user'])
     initial = {'to_user': user_id}
     if request.method == 'POST':
-        form = NewMessageForm(request.POST, user=request.user, initial=initial)
+        form = form_class(request.POST, user=request.user, initial=initial)
         if form.is_valid():
             msg = form.save()
             return HttpResponseRedirect(msg.get_absolute_url())
     else:
-        form = NewMessageForm(user=request.user, initial=initial)
+        form = form_class(user=request.user, initial=initial)
     return render_to_response(template_name, {
         'form': form
     }, context_instance=RequestContext(request))
