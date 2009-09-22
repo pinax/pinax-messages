@@ -30,11 +30,20 @@ class TestMessages(BaseTest):
         self.assertEqual(Thread.objects.inbox(self.brosner).count(), 0)
         self.assertEqual(Thread.objects.inbox(self.jtauber).count(), 1)
         
-        Message.objects.new_reply(Thread.objects.inbox(self.jtauber)[0], 
-            self.jtauber, 'Yes, I am.')
+        thread = Thread.objects.inbox(self.jtauber)[0]
+        
+        Message.objects.new_reply(thread, self.jtauber, 'Yes, I am.')
         
         self.assertEqual(Thread.objects.inbox(self.brosner).count(), 1)
         self.assertEqual(Thread.objects.inbox(self.jtauber).count(), 1)
+        
+        Message.objects.new_reply(thread, self.brosner, "If you say so...")
+        Message.objects.new_reply(thread, self.jtauber, "Indeed I do")
+        
+        self.assertEqual(Thread.objects.get(pk=thread.pk).latest_message.content,
+            "Indeed I do")
+        self.assertEqual(Thread.objects.get(pk=thread.pk).first_message.content,
+            "You can't be serious")
 
 class TestMessageViews(BaseTest):
     urls = 'user_messages.tests.urls'
