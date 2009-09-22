@@ -42,7 +42,7 @@ class Message(models.Model):
     objects = MessageManager()
     
     class Meta:
-        ordering = ('sent_at',)
+        ordering = ('-sent_at',)
     
     @models.permalink
     def get_absolute_url(self):
