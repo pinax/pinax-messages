@@ -20,7 +20,7 @@ class Thread(models.Model):
     @property
     @cached_attribute
     def latest_message(self):
-        return self.messages.all()[0]
+        return self.messages.order_by('-sent_at')[0]
 
 
 class UserThread(models.Model):
@@ -42,7 +42,7 @@ class Message(models.Model):
     objects = MessageManager()
     
     class Meta:
-        ordering = ('-sent_at',)
+        ordering = ('sent_at',)
     
     @models.permalink
     def get_absolute_url(self):
