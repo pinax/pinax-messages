@@ -20,7 +20,7 @@ def inbox(request, template_name='user_messages/inbox.html'):
 def thread_detail(request, thread_id,
     template_name='user_messages/thread_detail.html', 
     form_class=MessageReplyForm):
-    qs = Thread.objects.filter(userthread__user=request.user)
+    qs = Thread.objects.filter(userthread__user=request.user).distinct()
     thread = get_object_or_404(qs, pk=thread_id)
     if request.method == 'POST':
         form = form_class(request.POST, user=request.user, thread=thread)
