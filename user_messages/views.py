@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
 from django.views.decorators.http import require_POST
 
-from user_messages.forms import MessageReplyForm, NewMessageForm
+from user_messages.forms import MessageReplyForm, NewMessageForm, NewMessageFormMultiple
 from user_messages.models import Thread
 
 
@@ -39,11 +39,19 @@ def thread_detail(request, thread_id,
 @login_required
 def message_create(request, user_id=None,
     template_name='user_messages/message_create.html',
-    form_class=NewMessageForm):
+    form_class=None, multiple=False):
+    if form_class is None:
+        if multiple:
+            form_class = NewMessageFormMultiple
+        else:
+            form_class = NewMessageForm
+    
     if user_id is not None:
-        user_id = int(user_id)
+        user_id = [int(user_id)]
     elif 'to_user' in request.GET and request.GET['to_user'].isdigit():
-        user_id = int(request.GET['to_user'])
+        user_id = map(int, request.GET.getlist('to_user'))
+    if not multiple and user_id:
+        user_id = user_id[0]
     initial = {'to_user': user_id}
     if request.method == 'POST':
         form = form_class(request.POST, user=request.user, initial=initial)
