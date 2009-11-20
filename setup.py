@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name = "user_messages",
-    version = "0.1",
+    version = "0.1-dev1",
     author = "Eldarion",
     author_email = "development@eldarion.com",
     description = "Private user messages for Django",
