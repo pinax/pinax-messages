@@ -1,21 +1,23 @@
 from datetime import datetime
 
-from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 from django.db import models
+
+from django.contrib.auth.models import User
 
 from user_messages.managers import ThreadManager, MessageManager
 from user_messages.utils import cached_attribute
 
+
 class Thread(models.Model):
-    subject = models.CharField(max_length=150)
     
-    users = models.ManyToManyField(User, through='UserThread')
+    subject = models.CharField(max_length=150)
+    users = models.ManyToManyField(User, through="UserThread")
     
     objects = ThreadManager()
     
-    @models.permalink
     def get_absolute_url(self):
-        return ('messages_message_lightbox', (self.id,))
+        return reverse("messages_message_lightbox", args=(self.id,))
     
     @property
     @cached_attribute
@@ -25,13 +27,13 @@ class Thread(models.Model):
     @property
     @cached_attribute
     def latest_message(self):
-        return self.messages.order_by('-sent_at')[0]
+        return self.messages.order_by("-sent_at")[0]
     
     @classmethod
     def ordered(cls, objs):
         """
         Returns the iterable ordered the correct way, this is a class method 
-        because we don't know what the type of the iterable will be.
+        because we don"t know what the type of the iterable will be.
         """
         objs = list(objs)
         objs.sort(key=lambda o: o.latest_message.sent_at, reverse=True)
@@ -39,6 +41,7 @@ class Thread(models.Model):
 
 
 class UserThread(models.Model):
+    
     thread = models.ForeignKey(Thread)
     user = models.ForeignKey(User)
     
@@ -47,17 +50,18 @@ class UserThread(models.Model):
 
 
 class Message(models.Model):
+    
     thread = models.ForeignKey(Thread, related_name="messages")
     
     sender = models.ForeignKey(User, related_name="sent_messages")
     sent_at = models.DateTimeField(default=datetime.now)
-
+    
     content = models.TextField()
     
     objects = MessageManager()
     
     class Meta:
-        ordering = ('sent_at',)
+        ordering = ("sent_at",)
     
     def get_absolute_url(self):
         return self.thread.get_absolute_url()

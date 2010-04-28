@@ -1,10 +1,10 @@
-DATABASE_ENGINE = 'sqlite3'
+DATABASE_ENGINE = "sqlite3"
 
-ROOT_URLCONF = ''
+ROOT_URLCONF = ""
 
-INSTALLED_APPS = (
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'user_messages',
-)
+INSTALLED_APPS = [
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "user_messages",
+]

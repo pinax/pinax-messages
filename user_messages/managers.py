@@ -4,6 +4,7 @@ from user_messages.signals import message_sent
 
 
 class ThreadManager(Manager):
+    
     def inbox(self, user):
         return self.filter(userthread__user=user, userthread__deleted=False)
     
@@ -12,6 +13,7 @@ class ThreadManager(Manager):
 
 
 class MessageManager(Manager):
+    
     def new_reply(self, thread, user, content):
         msg = self.create(thread=thread, sender=user, content=content)
         thread.userthread_set.exclude(user=user).update(deleted=False, unread=True)
