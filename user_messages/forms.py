@@ -9,7 +9,7 @@ class NewMessageForm(forms.Form):
     
     subject = forms.CharField()
     to_user = forms.ModelChoiceField(User.objects.all())
-    content = forms.CharField(widget=forms.Textarea(attrs={"class": "medium"}))
+    content = forms.CharField(widget=forms.Textarea)
     
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user")
@@ -28,7 +28,7 @@ class NewMessageFormMultiple(forms.Form):
     
     subject = forms.CharField()
     to_user = forms.ModelMultipleChoiceField(User.objects.all())
-    content = forms.CharField(widget=forms.Textarea(attrs={"class": "medium"}))
+    content = forms.CharField(widget=forms.Textarea)
     
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user")
@@ -45,7 +45,7 @@ class NewMessageFormMultiple(forms.Form):
 
 class MessageReplyForm(forms.Form):
     
-    content = forms.CharField(widget=forms.Textarea(attrs={"class": "medium"}))
+    content = forms.CharField(widget=forms.Textarea)
     
     def __init__(self, *args, **kwargs):
         self.thread = kwargs.pop("thread")

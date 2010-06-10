@@ -17,7 +17,7 @@ class Thread(models.Model):
     objects = ThreadManager()
     
     def get_absolute_url(self):
-        return reverse("messages_message_lightbox", args=(self.id,))
+        return reverse("messages_thread_detail", kwargs={"thread_id": self.pk})
     
     @property
     @cached_attribute
