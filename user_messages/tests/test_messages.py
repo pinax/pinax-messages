@@ -128,3 +128,6 @@ class TestMessageViews(BaseTest):
         self.assertEqual(Thread.objects.inbox(self.brosner).count(), 1)
         self.assertEqual(Thread.objects.inbox(self.brosner).get().messages.count(), 2)
         self.assertEqual(Thread.objects.unread(self.jtauber).count(), 0)
+    
+    def test_urls(self):
+        self.assertEqual(reverse("message_create", args=[10]), "/create/10/")
