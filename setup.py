@@ -2,7 +2,7 @@ from distutils.core import setup
 
 
 setup(
-    name = "user_messages",
+    name = "user-messages",
     version = "0.1.dev3",
     author = "Eldarion",
     author_email = "development@eldarion.com",
