@@ -1,0 +1,30 @@
+===============
+Getting Started
+===============
+
+
+Getting started with ``user-messages`` is easy.  First you need to install it::
+    
+    $ pip install user-messages
+
+Next add ``"user_messages"`` to your ``INSTALLED_APPS`` setting::
+    
+    INSTALLED_APPS = [
+        # some cool apps
+        
+        "user_messages",
+        
+        # other cool apps
+    ]
+
+Finally add the ``user-messages`` URLs to your URLconf::
+    
+    urlpatterns = patterns("",
+        # some cool URLs
+        
+        (r"^messages/", include("user_messages.urls")),
+        
+        # some other cool URLs
+    )
+
+Now all you need to do is wire up some templates.
