@@ -65,10 +65,10 @@ class TestMessageViews(BaseTest):
 
     def test_create_message(self):
         with self.login("brosner", "abc123"):
-            response = self.client.get(reverse("messages_inbox"))
+            response = self.get("messages_inbox")
             self.assertEqual(response.status_code, 200)
             
-            response = self.client.get(reverse("message_create"))
+            response = self.get("message_create")
             self.assertEqual(response.status_code, 200)
             
             data = {
@@ -77,39 +77,31 @@ class TestMessageViews(BaseTest):
                 "to_user": str(self.jtauber.id)
             }
             
-            response = self.client.post(reverse("message_create"), data)
+            response = self.post("message_create", data=data)
             self.assertEqual(response.status_code, 302)
             
             self.assertEqual(Thread.objects.inbox(self.jtauber).count(), 1)
             self.assertEqual(Thread.objects.inbox(self.brosner).count(), 0)
             
-            response = self.client.get(reverse("message_create", kwargs={
-                "user_id": self.jtauber.id
-            }))
+            response = self.get("message_create", user_id=self.jtauber.id)
             self.assertEqual(response.status_code, 200)
             self.assertContains(response, "selected=\"selected\">jtauber</option>")
             
             thread_id = Thread.objects.inbox(self.jtauber).get().id
             
-            response = self.client.get(reverse("messages_thread_detail", kwargs={
-                "thread_id": thread_id,
-            }))
+            response = self.get("messages_thread_detail", thread_id=thread_id)
             self.assertEqual(response.status_code, 200)
             self.assertContains(response, "Does this affect any of our sites?")
             
         with self.login("jtauber", "abc123"):
-            response = self.client.get(reverse("messages_inbox"))
+            response = self.get("messages_inbox")
             self.assertEqual(response.status_code, 200)
             self.assertContains(response, "Does this affect")
             
-            response = self.client.get(reverse("messages_thread_detail", kwargs={
-                "thread_id": thread_id,
-            }))
+            response = self.get("messages_thread_detail", thread_id=thread_id)
             self.assertContains(response, "Does this affect")
             
-            response = self.client.post(reverse("messages_thread_delete", kwargs={
-                "thread_id": thread_id,
-            }))
+            response = self.post("messages_thread_delete", thread_id=thread_id)
             self.assertEqual(response.status_code, 302)
             self.assertEqual(Thread.objects.inbox(self.jtauber).count(), 0)
             
@@ -117,9 +109,7 @@ class TestMessageViews(BaseTest):
                 "content": "Nope, the internet being down doesn't affect us.",
             }
             
-            response = self.client.post(reverse("messages_thread_detail", kwargs={
-                "thread_id": thread_id,
-            }), data)
+            response = self.post("messages_thread_detail", thread_id=thread_id, data=data)
             self.assertEqual(response.status_code, 302)
             self.assertEqual(Thread.objects.inbox(self.brosner).count(), 1)
             self.assertEqual(
@@ -130,3 +120,7 @@ class TestMessageViews(BaseTest):
     
     def test_urls(self):
         self.assertEqual(reverse("message_create", args=[10]), "/create/10/")
+
+class TestTemplateTags(BaseTest):
+    def test_unread(self):
+        pass
