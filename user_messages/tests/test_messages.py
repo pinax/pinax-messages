@@ -2,6 +2,7 @@ import os
 
 from django.conf import settings
 from django.core.urlresolvers import reverse
+from django.template import Context
 
 from django.contrib.auth.models import User
 
@@ -123,4 +124,15 @@ class TestMessageViews(BaseTest):
 
 class TestTemplateTags(BaseTest):
     def test_unread(self):
-        pass
+        thread = Message.objects.new_message(self.brosner, [self.jtauber], "Why did you the internet?", "I demand to know.").thread
+        tmpl = """{% load user_messages_tags %}{% if thread|unread:user %}UNREAD{% else %}READ{% endif %}"""
+        self.assert_renders(
+            tmpl,
+            Context({"thread": thread, "user": self.jtauber}),
+            "UNREAD"
+        )
+        self.assert_renders(
+            tmpl,
+            Context({"thread": thread, "user": self.brosner}),
+            "READ",
+        )
