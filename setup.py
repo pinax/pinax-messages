@@ -3,7 +3,7 @@ from distutils.core import setup
 
 setup(
     name = "user-messages",
-    version = "0.1.dev3",
+    version = "0.1.dev4",
     author = "Eldarion",
     author_email = "development@eldarion.com",
     description = "a reusable private user messages application for Django",
