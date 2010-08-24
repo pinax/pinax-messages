@@ -12,14 +12,16 @@ available in the context.
     
     Display the user's inbox.  The context contains:
     
-     * ``threads``: A queryset of the threads in the user's inbox.
+     * ``threads``: A queryset of the :class:`~user_messages.models.Thread`
+       objects in the user's inbox.
 
 .. function:: thread_detail(request, thread_id, template_name="user_messages/thread_detail.html", form_class=MessageReplyForm)
     
     Displays all the messages in an individual thread.  Also has a form for
     posting a new message in the thread.  The context contains:
     
-     * ``thread``: The ``Thread`` object to be displayed.
+     * ``thread``: The :class:`~user_messages.models.Thread` object to be
+       displayed.
      * ``form``: The form (an instance of ``form_class``) for posting a new
        reply.
 

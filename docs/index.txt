@@ -9,3 +9,4 @@ send messages to each other.
    
    gettingstarted
    views
+   models
