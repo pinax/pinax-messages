@@ -3,7 +3,7 @@ from distutils.core import setup
 
 setup(
     name = "user-messages",
-    version = "0.1.dev4",
+    version = "0.1.dev5",
     author = "Eldarion",
     author_email = "development@eldarion.com",
     description = "a reusable private user messages application for Django",
@@ -13,6 +13,7 @@ setup(
     packages = [
         "user_messages",
         "user_messages.tests",
+        "user_messages.templatetags",
     ],
     classifiers = [
         "Development Status :: 3 - Alpha",
