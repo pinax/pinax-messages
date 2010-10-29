@@ -17,7 +17,7 @@ class MessageManager(Manager):
     def new_reply(self, thread, user, content):
         msg = self.create(thread=thread, sender=user, content=content)
         thread.userthread_set.exclude(user=user).update(deleted=False, unread=True)
-        message_sent.send(sender=self.model, message=msg, thread=thread)
+        message_sent.send(sender=self.model, message=msg, thread=thread, reply=True)
         return msg
     
     def new_message(self, from_user, to_users, subject, content):
@@ -27,5 +27,5 @@ class MessageManager(Manager):
             thread.userthread_set.create(user=user, deleted=False, unread=True)
         thread.userthread_set.create(user=from_user, deleted=True, unread=False)
         msg = self.create(thread=thread, sender=from_user, content=content)
-        message_sent.send(sender=self.model, message=msg, thread=thread)
+        message_sent.send(sender=self.model, message=msg, thread=thread, reply=False)
         return msg
