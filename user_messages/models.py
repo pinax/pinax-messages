@@ -54,7 +54,7 @@ class Message(models.Model):
     thread = models.ForeignKey(Thread, related_name="messages")
     
     sender = models.ForeignKey(User, related_name="sent_messages")
-    sent_at = models.DateTimeField(default=datetime.now)
+    sent_at = models.DateTimeField(default=datetime.utcnow)
     
     content = models.TextField()
     
