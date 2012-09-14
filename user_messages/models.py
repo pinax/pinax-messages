@@ -3,6 +3,7 @@ from datetime import datetime
 from django.core.urlresolvers import reverse
 from django.db import models
 
+from django.utils import timezone
 from django.contrib.auth.models import User
 
 from user_messages.managers import ThreadManager, MessageManager
@@ -54,7 +55,7 @@ class Message(models.Model):
     thread = models.ForeignKey(Thread, related_name="messages")
     
     sender = models.ForeignKey(User, related_name="sent_messages")
-    sent_at = models.DateTimeField(default=datetime.utcnow)
+    sent_at = models.DateTimeField(default=timezone.now)
     
     content = models.TextField()
     
