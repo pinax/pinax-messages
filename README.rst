@@ -7,14 +7,14 @@ User messaging
 .. image:: https://img.shields.io/coveralls/eldarion/user_messages.svg
     :target: https://coveralls.io/r/eldarion/user_messages
 
-.. image:: https://img.shields.io/pypi/dm/user_messages.svg
-    :target:  https://pypi.python.org/pypi/user_messages/
+.. image:: https://img.shields.io/pypi/dm/user-messages.svg
+    :target:  https://pypi.python.org/pypi/user-messages/
 
-.. image:: https://img.shields.io/pypi/v/user_messages.svg
-    :target:  https://pypi.python.org/pypi/user_messages/
+.. image:: https://img.shields.io/pypi/v/user-messages.svg
+    :target:  https://pypi.python.org/pypi/user-messages/
 
 .. image:: https://img.shields.io/badge/license-BSD-blue.svg
-    :target:  https://pypi.python.org/pypi/user_messages/
+    :target:  https://pypi.python.org/pypi/user-messages/
 
 
 ``user-messages`` is an application for allowing users of your Django site to
