@@ -49,7 +49,7 @@ def message_create(request, user_id=None,
             form_class = NewMessageFormMultiple
         else:
             form_class = NewMessageForm
-    
+
     if user_id is not None:
         user_id = [int(user_id)]
     elif "to_user" in request.GET and request.GET["to_user"].isdigit():

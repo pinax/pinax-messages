@@ -6,7 +6,7 @@ send messages to each other.
 
 .. toctree::
    :maxdepth: 2
-   
+
    gettingstarted
    views
    models
