@@ -16,14 +16,16 @@ def inbox(request, template_name="user_messages/inbox.html"):
     threads_unread = Thread.ordered(Thread.objects.unread(request.user))
     return render_to_response(template_name, {
         "threads": threads,
-        "unread" : threads_unread
+        "unread": threads_unread
     }, context_instance=RequestContext(request))
 
 
 @login_required
-def thread_detail(request, thread_id,
+def thread_detail(
+    request, thread_id,
     template_name="user_messages/thread_detail.html",
-    form_class=MessageReplyForm):
+    form_class=MessageReplyForm
+):
     qs = Thread.objects.filter(userthread__user=request.user).distinct()
     thread = get_object_or_404(qs, pk=thread_id)
     if request.method == "POST":
@@ -41,9 +43,11 @@ def thread_detail(request, thread_id,
 
 
 @login_required
-def message_create(request, user_id=None,
+def message_create(
+    request, user_id=None,
     template_name="user_messages/message_create.html",
-    form_class=None, multiple=False):
+    form_class=None, multiple=False
+):
     if form_class is None:
         if multiple:
             form_class = NewMessageFormMultiple

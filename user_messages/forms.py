@@ -20,8 +20,8 @@ class NewMessageForm(forms.Form):
 
     def save(self):
         data = self.cleaned_data
-        return Message.objects.new_message(self.user, [data["to_user"]],
-            data["subject"], data["content"])
+        return Message.objects.new_message(
+            self.user, [data["to_user"]], data["subject"], data["content"])
 
 
 class NewMessageFormMultiple(forms.Form):
@@ -39,8 +39,8 @@ class NewMessageFormMultiple(forms.Form):
 
     def save(self):
         data = self.cleaned_data
-        return Message.objects.new_message(self.user, data["to_user"],
-            data["subject"], data["content"])
+        return Message.objects.new_message(
+            self.user, data["to_user"], data["subject"], data["content"])
 
 
 class MessageReplyForm(forms.Form):
@@ -53,5 +53,5 @@ class MessageReplyForm(forms.Form):
         super(MessageReplyForm, self).__init__(*args, **kwargs)
 
     def save(self):
-        return Message.objects.new_reply(self.thread, self.user,
-            self.cleaned_data["content"])
+        return Message.objects.new_reply(
+            self.thread, self.user, self.cleaned_data["content"])

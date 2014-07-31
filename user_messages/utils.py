@@ -6,6 +6,7 @@ except ImportError:
 
 def cached_attribute(func):
     cache_name = "_%s" % func.__name__
+
     @wraps(func)
     def inner(self, *args, **kwargs):
         if hasattr(self, cache_name):

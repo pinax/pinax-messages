@@ -1,2 +1,2 @@
-from user_messages.tests.test_messages import (TestMessages, TestMessageViews,
-    TestTemplateTags)
+from user_messages.tests.test_messages import (  # noqa
+    TestMessages, TestMessageViews, TestTemplateTags)

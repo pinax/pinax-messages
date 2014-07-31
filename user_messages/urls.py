@@ -1,7 +1,8 @@
-from django.conf.urls.defaults import patterns, include, url, handler404, handler500
+from django.conf.urls.defaults import patterns, url
 
 
-urlpatterns = patterns("user_messages.views",
+urlpatterns = patterns(
+    "user_messages.views",
     url(r"^inbox/$", "inbox", name="messages_inbox"),
     url(r"^create/$", "message_create", name="message_create"),
     url(r"^create/(?P<user_id>\d+)/$", "message_create", name="message_create"),

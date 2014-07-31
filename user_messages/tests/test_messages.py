@@ -13,10 +13,10 @@ from user_messages.models import Thread, Message
 
 class BaseTest(TestCase):
     def setUp(self):
-        self.brosner = User.objects.create_superuser("brosner",
-            "brosner@brosner.brosner", "abc123")
-        self.jtauber = User.objects.create_superuser("jtauber",
-            "jtauber@jtauber.jtauber", "abc123")
+        self.brosner = User.objects.create_superuser(
+            "brosner", "brosner@brosner.brosner", "abc123")
+        self.jtauber = User.objects.create_superuser(
+            "jtauber", "jtauber@jtauber.jtauber", "abc123")
         if hasattr(self, "template_dirs"):
             self._old_template_dirs = settings.TEMPLATE_DIRS
             settings.TEMPLATE_DIRS = self.template_dirs
@@ -28,8 +28,8 @@ class BaseTest(TestCase):
 
 class TestMessages(BaseTest):
     def test_messages(self):
-        Message.objects.new_message(self.brosner, [self.jtauber], "Really?",
-            "You can't be serious")
+        Message.objects.new_message(
+            self.brosner, [self.jtauber], "Really?", "You can't be serious")
 
         self.assertEqual(Thread.objects.inbox(self.brosner).count(), 0)
         self.assertEqual(Thread.objects.inbox(self.jtauber).count(), 1)
@@ -44,17 +44,22 @@ class TestMessages(BaseTest):
         Message.objects.new_reply(thread, self.brosner, "If you say so...")
         Message.objects.new_reply(thread, self.jtauber, "Indeed I do")
 
-        self.assertEqual(Thread.objects.get(pk=thread.pk).latest_message.content,
+        self.assertEqual(
+            Thread.objects.get(pk=thread.pk).latest_message.content,
             "Indeed I do")
-        self.assertEqual(Thread.objects.get(pk=thread.pk).first_message.content,
+        self.assertEqual(
+            Thread.objects.get(pk=thread.pk).first_message.content,
             "You can't be serious")
 
     def test_ordered(self):
-        t1 = Message.objects.new_message(self.brosner, [self.jtauber], "Subject",
+        t1 = Message.objects.new_message(
+            self.brosner, [self.jtauber], "Subject",
             "A test message").thread
-        t2 = Message.objects.new_message(self.brosner, [self.jtauber], "Another",
+        t2 = Message.objects.new_message(
+            self.brosner, [self.jtauber], "Another",
             "Another message").thread
-        t3 = Message.objects.new_message(self.brosner, [self.jtauber], "Pwnt",
+        t3 = Message.objects.new_message(
+            self.brosner, [self.jtauber], "Pwnt",
             "Haha I'm spamming your inbox").thread
         self.assertEqual(Thread.ordered([t2, t1, t3]), [t3, t2, t1])
 
@@ -121,6 +126,7 @@ class TestMessageViews(BaseTest):
 
     def test_urls(self):
         self.assertEqual(reverse("message_create", args=[10]), "/create/10/")
+
 
 class TestTemplateTags(BaseTest):
     def test_unread(self):
