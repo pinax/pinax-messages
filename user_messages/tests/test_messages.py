@@ -3,10 +3,7 @@ import os
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.template import Template, Context
-from django.test import (
-    TestCase as BaseTestCase,
-    TransactionTestCase as BaseTransactionTestCase
-)
+from django.test import TestCase as BaseTestCase
 
 from django.contrib.auth.models import User
 
