@@ -2,13 +2,56 @@ import os
 
 from django.conf import settings
 from django.core.urlresolvers import reverse
-from django.template import Context
+from django.template import Template, Context
+from django.test import (
+    TestCase as BaseTestCase,
+    TransactionTestCase as BaseTransactionTestCase
+)
 
 from django.contrib.auth.models import User
 
-from eldarion.test import TestCase
-
 from user_messages.models import Thread, Message
+
+
+class login(object):
+
+    def __init__(self, testcase, user, password):
+        self.testcase = testcase
+        success = testcase.client.login(username=user, password=password)
+        self.testcase.assertTrue(
+            success,
+            "login with username=%r, password=%r failed" % (user, password)
+        )
+
+    def __enter__(self):
+        pass
+
+    def __exit__(self, *args):
+        self.testcase.client.logout()
+
+
+class TestCaseMixin(object):
+    def get(self, url_name, *args, **kwargs):
+        data = kwargs.pop("data", {})
+        return self.client.get(reverse(url_name, args=args, kwargs=kwargs), data)
+
+    def post(self, url_name, *args, **kwargs):
+        data = kwargs.pop("data", {})
+        return self.client.post(reverse(url_name, args=args, kwargs=kwargs), data)
+
+    def login(self, user, password):
+        return login(self, user, password)
+
+    def reload(self, obj):
+        return obj.__class__._default_manager.get(pk=obj.pk)
+
+    def assert_renders(self, tmpl, context, value):
+        tmpl = Template(tmpl)
+        self.assertEqual(tmpl.render(context), value)
+
+
+class TestCase(BaseTestCase, TestCaseMixin):
+    pass
 
 
 class BaseTest(TestCase):
