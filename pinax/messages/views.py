@@ -12,8 +12,8 @@ from .models import Thread
 
 @login_required
 def inbox(request, template_name="user_messages/inbox.html"):
-    threads = Thread.ordered(Thread.objects.inbox(request.user))
-    threads_unread = Thread.ordered(Thread.objects.unread(request.user))
+    threads = Thread.ordered(Thread.inbox(request.user))
+    threads_unread = Thread.ordered(Thread.unread(request.user))
     return render_to_response(template_name, {
         "threads": threads,
         "unread": threads_unread

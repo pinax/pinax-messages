@@ -7,7 +7,7 @@ from django.utils.encoding import python_2_unicode_compatible
 
 from django.contrib.auth.models import User
 
-from .managers import ThreadManager, MessageManager
+from .signals import message_sent
 from .utils import cached_attribute
 
 
@@ -17,7 +17,13 @@ class Thread(models.Model):
     subject = models.CharField(max_length=150)
     users = models.ManyToManyField(User, through="UserThread")
 
-    objects = ThreadManager()
+    @classmethod
+    def inbox(cls, user):
+        return cls.objects.filter(userthread__user=user, userthread__deleted=False)
+
+    @classmethod
+    def unread(cls, user):
+        return cls.objects.filter(userthread__user=user, userthread__deleted=False, userthread__unread=True)
 
     def __str__(self):
         return "{}: {}".format(
@@ -67,7 +73,22 @@ class Message(models.Model):
 
     content = models.TextField()
 
-    objects = MessageManager()
+    @classmethod
+    def new_reply(cls, thread, user, content):
+        msg = cls.objects.create(thread=thread, sender=user, content=content)
+        thread.userthread_set.exclude(user=user).update(deleted=False, unread=True)
+        message_sent.send(sender=cls, message=msg, thread=thread, reply=True)
+        return msg
+
+    @classmethod
+    def new_message(cls, from_user, to_users, subject, content):
+        thread = Thread.objects.create(subject=subject)
+        for user in to_users:
+            thread.userthread_set.create(user=user, deleted=False, unread=True)
+        thread.userthread_set.create(user=from_user, deleted=True, unread=False)
+        msg = cls.objects.create(thread=thread, sender=from_user, content=content)
+        message_sent.send(sender=cls, message=msg, thread=thread, reply=False)
+        return msg
 
     class Meta:
         ordering = ("sent_at",)

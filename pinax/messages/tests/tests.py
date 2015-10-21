@@ -68,21 +68,21 @@ class BaseTest(TestCase):
 
 class TestMessages(BaseTest):
     def test_messages(self):
-        Message.objects.new_message(
+        Message.new_message(
             self.brosner, [self.jtauber], "Really?", "You can't be serious")
 
-        self.assertEqual(Thread.objects.inbox(self.brosner).count(), 0)
-        self.assertEqual(Thread.objects.inbox(self.jtauber).count(), 1)
+        self.assertEqual(Thread.inbox(self.brosner).count(), 0)
+        self.assertEqual(Thread.inbox(self.jtauber).count(), 1)
 
-        thread = Thread.objects.inbox(self.jtauber)[0]
+        thread = Thread.inbox(self.jtauber)[0]
 
-        Message.objects.new_reply(thread, self.jtauber, "Yes, I am.")
+        Message.new_reply(thread, self.jtauber, "Yes, I am.")
 
-        self.assertEqual(Thread.objects.inbox(self.brosner).count(), 1)
-        self.assertEqual(Thread.objects.inbox(self.jtauber).count(), 1)
+        self.assertEqual(Thread.inbox(self.brosner).count(), 1)
+        self.assertEqual(Thread.inbox(self.jtauber).count(), 1)
 
-        Message.objects.new_reply(thread, self.brosner, "If you say so...")
-        Message.objects.new_reply(thread, self.jtauber, "Indeed I do")
+        Message.new_reply(thread, self.brosner, "If you say so...")
+        Message.new_reply(thread, self.jtauber, "Indeed I do")
 
         self.assertEqual(
             Thread.objects.get(pk=thread.pk).latest_message.content,
@@ -92,13 +92,13 @@ class TestMessages(BaseTest):
             "You can't be serious")
 
     def test_ordered(self):
-        t1 = Message.objects.new_message(
+        t1 = Message.new_message(
             self.brosner, [self.jtauber], "Subject",
             "A test message").thread
-        t2 = Message.objects.new_message(
+        t2 = Message.new_message(
             self.brosner, [self.jtauber], "Another",
             "Another message").thread
-        t3 = Message.objects.new_message(
+        t3 = Message.new_message(
             self.brosner, [self.jtauber], "Pwnt",
             "Haha I'm spamming your inbox").thread
         self.assertEqual(Thread.ordered([t2, t1, t3]), [t3, t2, t1])
@@ -126,14 +126,14 @@ class TestMessageViews(BaseTest):
             response = self.post("message_create", data=data)
             self.assertEqual(response.status_code, 302)
 
-            self.assertEqual(Thread.objects.inbox(self.jtauber).count(), 1)
-            self.assertEqual(Thread.objects.inbox(self.brosner).count(), 0)
+            self.assertEqual(Thread.inbox(self.jtauber).count(), 1)
+            self.assertEqual(Thread.inbox(self.brosner).count(), 0)
 
             response = self.get("message_create", user_id=self.jtauber.id)
             self.assertEqual(response.status_code, 200)
             self.assertContains(response, "selected=\"selected\">jtauber</option>")
 
-            thread_id = Thread.objects.inbox(self.jtauber).get().id
+            thread_id = Thread.inbox(self.jtauber).get().id
 
             response = self.get("messages_thread_detail", thread_id=thread_id)
             self.assertEqual(response.status_code, 200)
@@ -149,7 +149,7 @@ class TestMessageViews(BaseTest):
 
             response = self.post("messages_thread_delete", thread_id=thread_id)
             self.assertEqual(response.status_code, 302)
-            self.assertEqual(Thread.objects.inbox(self.jtauber).count(), 0)
+            self.assertEqual(Thread.inbox(self.jtauber).count(), 0)
 
             data = {
                 "content": "Nope, the internet being down doesn't affect us.",
@@ -157,12 +157,12 @@ class TestMessageViews(BaseTest):
 
             response = self.post("messages_thread_detail", thread_id=thread_id, data=data)
             self.assertEqual(response.status_code, 302)
-            self.assertEqual(Thread.objects.inbox(self.brosner).count(), 1)
+            self.assertEqual(Thread.inbox(self.brosner).count(), 1)
             self.assertEqual(
-                Thread.objects.inbox(self.brosner).get().messages.count(),
+                Thread.inbox(self.brosner).get().messages.count(),
                 2
             )
-            self.assertEqual(Thread.objects.unread(self.jtauber).count(), 0)
+            self.assertEqual(Thread.unread(self.jtauber).count(), 0)
 
     def test_urls(self):
         self.assertEqual(reverse("message_create", args=[10]), "/create/10/")
@@ -170,7 +170,7 @@ class TestMessageViews(BaseTest):
 
 class TestTemplateTags(BaseTest):
     def test_unread(self):
-        thread = Message.objects.new_message(self.brosner, [self.jtauber], "Why did you the internet?", "I demand to know.").thread
+        thread = Message.new_message(self.brosner, [self.jtauber], "Why did you the internet?", "I demand to know.").thread
         tmpl = """{% load pinax_messages_tags %}{% if thread|unread:user %}UNREAD{% else %}READ{% endif %}"""
         self.assert_renders(
             tmpl,
