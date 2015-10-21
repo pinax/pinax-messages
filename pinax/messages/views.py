@@ -2,44 +2,74 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
+from django.views.generic import TemplateView, DetailView
+from django.views.generic.edit import FormMixin
 from django.views.decorators.http import require_POST
 
 from account.decorators import login_required
+from account.mixins import LoginRequiredMixin
 
 from .forms import MessageReplyForm, NewMessageForm, NewMessageFormMultiple
 from .models import Thread
 
 
-@login_required
-def inbox(request, template_name="user_messages/inbox.html"):
-    threads = Thread.ordered(Thread.inbox(request.user))
-    threads_unread = Thread.ordered(Thread.unread(request.user))
-    return render_to_response(template_name, {
-        "threads": threads,
-        "unread": threads_unread
-    }, context_instance=RequestContext(request))
+class InboxView(LoginRequiredMixin, TemplateView):
+    template_name = "pinax/messages/inbox.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(InboxView, self).get_context_data(**kwargs)
+        context.update({
+            "threads": Thread.ordered(Thread.inbox(self.request.user)),
+            "threads_unread": Thread.ordered(Thread.unread(self.request.user))
+        })
+        return context
 
 
-@login_required
-def thread_detail(
-    request, thread_id,
-    template_name="user_messages/thread_detail.html",
-    form_class=MessageReplyForm
-):
-    qs = Thread.objects.filter(userthread__user=request.user).distinct()
-    thread = get_object_or_404(qs, pk=thread_id)
-    if request.method == "POST":
-        form = form_class(request.POST, user=request.user, thread=thread)
+class ThreadView(LoginRequiredMixin, FormMixin, DetailView):
+    model = Thread
+    context_object_name = "thread"
+    template_name = "pinax/messages/thread_detail.html"
+    form_class = MessageReplyForm
+
+    def get_queryset(self):
+        qs = super(ThreadView, self).get_queryset()
+        qs = qs.filter(userthread__user=self.request.user).distinct()
+        return qs
+
+    def get_form_kwargs(self):
+        kwargs = super(ThreadView, self).get_form_kwargs()
+        kwargs.update({
+            "user": self.request.user,
+            "thread": self.object
+        })
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super(ThreadView, self).get_context_data(**kwargs)
+        context.update({
+            "form": self.get_form()
+        })
+        return context
+
+    def get_success_url(self):
+        return reverse("messages_inbox")
+
+    def get(self, request, *args, **kwargs):
+        response = super(ThreadView, self).get(request, *args, **kwargs)
+        self.object.userthread_set.filter(user=request.user).update(unread=False)
+        return response
+
+    def form_valid(self, form):
+        form.save()
+        return super(ThreadView, self).form_valid(form)
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
         if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse("messages_inbox"))
-    else:
-        form = form_class(user=request.user, thread=thread)
-        thread.userthread_set.filter(user=request.user).update(unread=False)
-    return render_to_response(template_name, {
-        "thread": thread,
-        "form": form
-    }, context_instance=RequestContext(request))
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
 
 
 @login_required
