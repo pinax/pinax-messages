@@ -27,11 +27,11 @@ class Thread(models.Model):
     def __str__(self):
         return "{}: {}".format(
             self.subject,
-            ", ".join([user for user in self.users.all()])
+            ", ".join([str(user) for user in self.users.all()])
         )
 
     def get_absolute_url(self):
-        return reverse("messages_thread_detail", kwargs={"thread_id": self.pk})
+        return reverse("messages_thread_detail", args=[self.pk])
 
     @property
     @cached_attribute
