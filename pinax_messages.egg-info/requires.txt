@@ -1,1 +1,0 @@
-django-user-accounts>=1.2
