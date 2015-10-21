@@ -27,6 +27,7 @@ setup(
     tests_require=[
     ],
     install_requires=[
+        "django-appconf>=1.0.1",
         "django-user-accounts>=1.2"
     ],
     classifiers=[

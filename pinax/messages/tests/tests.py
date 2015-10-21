@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 from django.template import Template, Context
 from django.test import TestCase as BaseTestCase
 
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
 from ..models import Thread, Message
 
@@ -53,6 +53,7 @@ class TestCase(BaseTestCase, TestCaseMixin):
 
 class BaseTest(TestCase):
     def setUp(self):
+        User = get_user_model()
         self.brosner = User.objects.create_superuser(
             "brosner", "brosner@brosner.brosner", "abc123")
         self.jtauber = User.objects.create_superuser(
