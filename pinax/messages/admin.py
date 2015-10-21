@@ -15,5 +15,5 @@ class MessageAdmin(admin.ModelAdmin):
     raw_id_fields = ["sender"]
 
 
-admin.site.register[Message, MessageAdmin]
-admin.site.register[UserThread, UserThreadAdmin]
+admin.site.register(Message, MessageAdmin)
+admin.site.register(UserThread, UserThreadAdmin)
