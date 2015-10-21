@@ -1,7 +1,3 @@
-[ ] permit custom user models
-[ ] do we need managers instead of just using classmethods
-
-
 Pinax Messages
 ==============
 
