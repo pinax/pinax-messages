@@ -1,6 +1,6 @@
 from django.db.models import Manager
 
-from user_messages.signals import message_sent
+from .signals import message_sent
 
 
 class ThreadManager(Manager):
@@ -12,7 +12,7 @@ class ThreadManager(Manager):
         return self.filter(userthread__user=user, userthread__deleted=False, userthread__unread=True)
 
 
-class MessageManager(Manager):
+class MessageManager(Manager):  # @@@ these would be better as classmethods
 
     def new_reply(self, thread, user, content):
         msg = self.create(thread=thread, sender=user, content=content)
@@ -21,7 +21,7 @@ class MessageManager(Manager):
         return msg
 
     def new_message(self, from_user, to_users, subject, content):
-        from user_messages.models import Thread
+        from .models import Thread
         thread = Thread.objects.create(subject=subject)
         for user in to_users:
             thread.userthread_set.create(user=user, deleted=False, unread=True)

@@ -7,7 +7,7 @@ from django.test import TestCase as BaseTestCase
 
 from django.contrib.auth.models import User
 
-from user_messages.models import Thread, Message
+from ..models import Thread, Message
 
 
 class login(object):
@@ -171,7 +171,7 @@ class TestMessageViews(BaseTest):
 class TestTemplateTags(BaseTest):
     def test_unread(self):
         thread = Message.objects.new_message(self.brosner, [self.jtauber], "Why did you the internet?", "I demand to know.").thread
-        tmpl = """{% load user_messages_tags %}{% if thread|unread:user %}UNREAD{% else %}READ{% endif %}"""
+        tmpl = """{% load pinax_messages_tags %}{% if thread|unread:user %}UNREAD{% else %}READ{% endif %}"""
         self.assert_renders(
             tmpl,
             Context({"thread": thread, "user": self.jtauber}),

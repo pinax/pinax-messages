@@ -1,4 +1,4 @@
-from user_messages.models import Thread
+from .models import Thread
 
 
 def user_messages(request):

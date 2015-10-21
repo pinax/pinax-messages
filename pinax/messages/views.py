@@ -4,10 +4,10 @@ from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
 from django.views.decorators.http import require_POST
 
-from django.contrib.auth.decorators import login_required
+from account.decorators import login_required
 
-from user_messages.forms import MessageReplyForm, NewMessageForm, NewMessageFormMultiple
-from user_messages.models import Thread
+from .forms import MessageReplyForm, NewMessageForm, NewMessageFormMultiple
+from .models import Thread
 
 
 @login_required

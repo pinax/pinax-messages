@@ -1,11 +1,11 @@
 from django.core.urlresolvers import reverse
 from django.db import models
-
 from django.utils import timezone
+
 from django.contrib.auth.models import User
 
-from user_messages.managers import ThreadManager, MessageManager
-from user_messages.utils import cached_attribute
+from .managers import ThreadManager, MessageManager
+from .utils import cached_attribute
 
 
 class Thread(models.Model):
