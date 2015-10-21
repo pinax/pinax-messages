@@ -1,6 +1,9 @@
+from __future__ import unicode_literals
+
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils import timezone
+from django.utils.encoding import python_2_unicode_compatible
 
 from django.contrib.auth.models import User
 
@@ -8,12 +11,19 @@ from .managers import ThreadManager, MessageManager
 from .utils import cached_attribute
 
 
+@python_2_unicode_compatible
 class Thread(models.Model):
 
     subject = models.CharField(max_length=150)
     users = models.ManyToManyField(User, through="UserThread")
 
     objects = ThreadManager()
+
+    def __str__(self):
+        return "{}: {}".format(
+            self.subject,
+            ", ".join([user for user in self.users.all()])
+        )
 
     def get_absolute_url(self):
         return reverse("messages_thread_detail", kwargs={"thread_id": self.pk})
