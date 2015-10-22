@@ -19,6 +19,16 @@ Pinax Messages
 .. image:: https://img.shields.io/badge/license-MIT-blue.svg
    :target:  https://pypi.python.org/pypi/pinax-messages/
 
+Pinax
+-----
+
+Pinax is an open-source platform built on the Django Web Framework. It is an
+ecosystem of reusable Django apps, themes, and starter project templates.
+This collection can be found at http://pinaxproject.com.
+
+pinax-messages
+---------------
+
 ``pinax-messages`` is an application for allowing users of your Django site to
 send messages to each other.
 
@@ -26,12 +36,6 @@ This was formerly named `user-messages` but was renamed after being donated to
 Pinax from Eldarion.
 
 
-Pinax
------
-
-Pinax is an open-source platform built on the Django Web Framework. It is an
-ecosystem of reusable Django apps, themes, and starter project templates.
-This collection can be found at http://pinaxproject.com.
 
 
 
