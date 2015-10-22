@@ -6,10 +6,22 @@ from .hooks import hookset
 from .models import Message
 
 
+class UserModelChoiceField(forms.ModelChoiceField):
+
+    def label_from_instance(self, obj):
+        return hookset.display_name(obj)
+
+
+class UserModelMultipleChoiceField(forms.ModelMultipleChoiceField):
+
+    def label_from_instance(self, obj):
+        return hookset.display_name(obj)
+
+
 class NewMessageForm(forms.Form):
 
     subject = forms.CharField()
-    to_user = forms.ModelChoiceField(queryset=get_user_model().objects.none)
+    to_user = UserModelChoiceField(queryset=get_user_model().objects.none)
     content = forms.CharField(widget=forms.Textarea)
 
     def __init__(self, *args, **kwargs):
@@ -30,7 +42,7 @@ class NewMessageForm(forms.Form):
 class NewMessageFormMultiple(forms.Form):
 
     subject = forms.CharField()
-    to_user = forms.ModelMultipleChoiceField(get_user_model().objects.none)
+    to_user = UserModelMultipleChoiceField(get_user_model().objects.none)
     content = forms.CharField(widget=forms.Textarea)
 
     def __init__(self, *args, **kwargs):
