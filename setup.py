@@ -16,7 +16,7 @@ setup(
     description="a reusable private user messages application for Django",
     name="pinax-messages",
     long_description=read("README.rst"),
-    version="0.1",
+    version="0.2",
     url="http://github.com/pinax/pinax-messages/",
     license="MIT",
     packages=find_packages(),
