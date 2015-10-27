@@ -69,7 +69,7 @@ Running the Tests
 
 Documentation
 ---------------
-
+The pinax-messages documentation is currently under construction. If you would like to help us write documentation, please join our Slack channel and let us know!
 The Pinax documentation is available at http://pinaxproject.com/pinax/.
 
 
