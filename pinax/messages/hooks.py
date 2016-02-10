@@ -8,9 +8,10 @@ class DefaultHookSet(object):
 
 
 class HookProxy(object):
+    _settings = None
 
     def load_settings(self):
-        if not hasattr(self, "_settings"):
+        if self._settings is None:
             from .conf import settings
             self._settings = settings
 
