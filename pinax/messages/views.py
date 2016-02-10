@@ -75,7 +75,7 @@ class ThreadView(LoginRequiredMixin, FormMixin, DetailView):
 @login_required
 def message_create(
     request, user_id=None,
-    template_name="user_messages/message_create.html",
+    template_name="pinax/messages/message_create.html",
     form_class=None, multiple=False
 ):
     if form_class is None:
