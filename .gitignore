@@ -4,3 +4,4 @@ dist
 MANIFEST
 docs/_build
 .eggs
+.idea
