@@ -1,0 +1,7 @@
+[run]
+source = pinax
+omit = pinax/messages/tests/*,pinax/messages/admin.py
+branch = 1
+
+[report]
+omit = pinax/messages/tests/*,pinax/messages/admin.py
