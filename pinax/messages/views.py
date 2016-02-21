@@ -1,8 +1,6 @@
-from account.decorators import login_required
 from account.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
-from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, DetailView, CreateView, DeleteView
 from django.views.generic.edit import FormMixin
 
@@ -69,8 +67,7 @@ class ThreadView(LoginRequiredMixin, FormMixin, DetailView):
             return self.form_invalid(form)
 
 
-@method_decorator(login_required, name='dispatch')
-class MessageCreateView(CreateView):
+class MessageCreateView(LoginRequiredMixin, CreateView):
     template_name="pinax/messages/message_create.html"
 
     def get_form_class(self):
@@ -97,8 +94,7 @@ class MessageCreateView(CreateView):
         return kwargs
 
 
-@method_decorator(login_required, name='dispatch')
-class ThreadDeleteView(DeleteView):
+class ThreadDeleteView(LoginRequiredMixin, DeleteView):
     model = Thread
     success_url = 'messages_inbox'
 
