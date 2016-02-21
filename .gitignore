@@ -1,7 +1,11 @@
-*.egg-info
-*.pyc
+build
 dist
-MANIFEST
-docs/_build
-.eggs
+.coverage
+.tox
 .idea
+MANIFEST
+*.pyc
+*.egg-info
+*.egg
+docs/_build/
+htmlcov/
