@@ -1,13 +1,8 @@
+from account.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render_to_response
-from django.template import RequestContext
-from django.views.generic import TemplateView, DetailView
+from django.views.generic import TemplateView, DetailView, CreateView, DeleteView
 from django.views.generic.edit import FormMixin
-from django.views.decorators.http import require_POST
-
-from account.decorators import login_required
-from account.mixins import LoginRequiredMixin
 
 from .forms import MessageReplyForm, NewMessageForm, NewMessageFormMultiple
 from .models import Thread
@@ -72,41 +67,39 @@ class ThreadView(LoginRequiredMixin, FormMixin, DetailView):
             return self.form_invalid(form)
 
 
-@login_required
-def message_create(
-    request, user_id=None,
-    template_name="pinax/messages/message_create.html",
-    form_class=None, multiple=False
-):
-    if form_class is None:
-        if multiple:
-            form_class = NewMessageFormMultiple
-        else:
-            form_class = NewMessageForm
+class MessageCreateView(LoginRequiredMixin, CreateView):
+    template_name="pinax/messages/message_create.html"
 
-    if user_id is not None:
-        user_id = [int(user_id)]
-    elif "to_user" in request.GET and request.GET["to_user"].isdigit():
-        user_id = map(int, request.GET.getlist("to_user"))
-    if not multiple and user_id:
-        user_id = user_id[0]
-    initial = {"to_user": user_id}
-    if request.method == "POST":
-        form = form_class(request.POST, user=request.user, initial=initial)
-        if form.is_valid():
-            msg = form.save()
-            return HttpResponseRedirect(msg.get_absolute_url())
-    else:
-        form = form_class(user=request.user, initial=initial)
-    return render_to_response(template_name, {
-        "form": form
-    }, context_instance=RequestContext(request))
+    def get_form_class(self):
+        if self.form_class is None:
+            if self.kwargs.get('multiple', False):
+                return NewMessageFormMultiple
+        return NewMessageForm
+
+    def get_initial(self):
+        user_id = self.kwargs.get('user_id', None)
+        if user_id is not None:
+            user_id = [int(user_id)]
+        elif "to_user" in self.request.GET and self.request.GET["to_user"].isdigit():
+            user_id = map(int, self.request.GET.getlist("to_user"))
+        if not self.kwargs.get('multiple', False) and user_id:
+            user_id = user_id[0]
+        return {"to_user": user_id}
+
+    def get_form_kwargs(self):
+        kwargs = super(MessageCreateView, self).get_form_kwargs()
+        kwargs.update({
+            'user': self.request.user,
+        })
+        return kwargs
 
 
-@login_required
-@require_POST
-def thread_delete(request, thread_id):
-    qs = Thread.objects.filter(userthread__user=request.user)
-    thread = get_object_or_404(qs, pk=thread_id)
-    thread.userthread_set.filter(user=request.user).update(deleted=True)
-    return HttpResponseRedirect(reverse("messages_inbox"))
+class ThreadDeleteView(LoginRequiredMixin, DeleteView):
+    model = Thread
+    success_url = 'messages_inbox'
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        success_url = self.get_success_url()
+        self.object.userthread_set.filter(user=request.user).update(deleted=True)
+        return HttpResponseRedirect(success_url)
