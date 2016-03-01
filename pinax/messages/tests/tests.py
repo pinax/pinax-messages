@@ -44,13 +44,16 @@ class TestMessages(BaseTest):
 
         self.assertEqual(Thread.inbox(self.brosner).count(), 0)
         self.assertEqual(Thread.inbox(self.jtauber).count(), 1)
+        self.assertEqual(Thread.unread(self.jtauber).count(), 1)
 
         thread = Thread.inbox(self.jtauber)[0]
 
         Message.new_reply(thread, self.jtauber, "Yes, I am.")
 
         self.assertEqual(Thread.inbox(self.brosner).count(), 1)
-        self.assertEqual(Thread.inbox(self.jtauber).count(), 0)
+        # Replier's inbox count is unchanged but unread is decremented.
+        self.assertEqual(Thread.inbox(self.jtauber).count(), 1)
+        self.assertEqual(Thread.unread(self.jtauber).count(), 0)
 
         Message.new_reply(thread, self.brosner, "If you say so...")
         reply_string = "Indeed I do"
@@ -141,7 +144,7 @@ class TestMessageViews(BaseTest):
             self.assertEqual(response.status_code, 200)
             self.assertContains(response, message_string)
 
-    def test_receiver_get_thread_detail(self):
+    def test_recipient_get_thread_detail(self):
         """
         Ensure message recipient can view thread detail.
         """

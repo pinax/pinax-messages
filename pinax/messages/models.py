@@ -82,11 +82,11 @@ class Message(models.Model):
         Create a new reply for an existing Thread.
 
         Mark thread as unread for all other participants, and
-        mark thread as read and deleted from inbox by replier.
+        mark thread as read by replier.
         """
         msg = cls.objects.create(thread=thread, sender=user, content=content)
         thread.userthread_set.exclude(user=user).update(deleted=False, unread=True)
-        thread.userthread_set.filter(user=user).update(deleted=True, unread=False)
+        thread.userthread_set.filter(user=user).update(deleted=False, unread=False)
         message_sent.send(sender=cls, message=msg, thread=thread, reply=True)
         return msg
 
