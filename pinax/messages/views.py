@@ -47,7 +47,7 @@ class ThreadView(LoginRequiredMixin, FormMixin, DetailView):
         return context
 
     def get_success_url(self):
-        return reverse("messages_inbox")
+        return reverse("pinax_messages_inbox")
 
     def get(self, request, *args, **kwargs):
         response = super(ThreadView, self).get(request, *args, **kwargs)
@@ -68,35 +68,35 @@ class ThreadView(LoginRequiredMixin, FormMixin, DetailView):
 
 
 class MessageCreateView(LoginRequiredMixin, CreateView):
-    template_name="pinax/messages/message_create.html"
+    template_name = "pinax/messages/message_create.html"
 
     def get_form_class(self):
         if self.form_class is None:
-            if self.kwargs.get('multiple', False):
+            if self.kwargs.get("multiple", False):
                 return NewMessageFormMultiple
         return NewMessageForm
 
     def get_initial(self):
-        user_id = self.kwargs.get('user_id', None)
+        user_id = self.kwargs.get("user_id", None)
         if user_id is not None:
             user_id = [int(user_id)]
         elif "to_user" in self.request.GET and self.request.GET["to_user"].isdigit():
             user_id = map(int, self.request.GET.getlist("to_user"))
-        if not self.kwargs.get('multiple', False) and user_id:
+        if not self.kwargs.get("multiple", False) and user_id:
             user_id = user_id[0]
         return {"to_user": user_id}
 
     def get_form_kwargs(self):
         kwargs = super(MessageCreateView, self).get_form_kwargs()
         kwargs.update({
-            'user': self.request.user,
+            "user": self.request.user,
         })
         return kwargs
 
 
 class ThreadDeleteView(LoginRequiredMixin, DeleteView):
     model = Thread
-    success_url = 'messages_inbox'
+    success_url = "pinax_messages_inbox"
 
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()

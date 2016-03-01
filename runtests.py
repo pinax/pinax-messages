@@ -12,11 +12,16 @@ DEFAULT_SETTINGS = dict(
         "django.contrib.auth",
         "django.contrib.contenttypes",
         "django.contrib.sites",
+        "django.contrib.sessions",
         "account",
         "pinax.messages",
         "pinax.messages.tests"
     ],
-    MIDDLEWARE_CLASSES=[],
+    MIDDLEWARE_CLASSES=[
+        "django.contrib.sessions.middleware.SessionMiddleware",
+        "django.contrib.auth.middleware.AuthenticationMiddleware",
+        "django.contrib.auth.middleware.SessionAuthenticationMiddleware",
+    ],
     DATABASES={
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
@@ -31,6 +36,12 @@ DEFAULT_SETTINGS = dict(
     ],
     AUTHENTICATION_BACKENDS=[
         "account.auth_backends.UsernameAuthenticationBackend",
+    ],
+    TEMPLATES=[
+        {
+            "BACKEND": "django.template.backends.django.DjangoTemplates",
+            "APP_DIRS": True,
+        },
     ]
 )
 
