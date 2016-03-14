@@ -9,3 +9,5 @@ MANIFEST
 *.egg
 docs/_build/
 htmlcov/
+.python-version
+.eggs/
