@@ -22,7 +22,11 @@ class Thread(models.Model):
 
     @classmethod
     def unread(cls, user):
-        return cls.objects.filter(userthread__user=user, userthread__deleted=False, userthread__unread=True)
+        return cls.objects.filter(
+            userthread__user=user,
+            userthread__deleted=False,
+            userthread__unread=True
+        )
 
     def __str__(self):
         return "{}: {}".format(
@@ -31,7 +35,7 @@ class Thread(models.Model):
         )
 
     def get_absolute_url(self):
-        return reverse("messages_thread_detail", args=[self.pk])
+        return reverse("pinax_messages:thread_detail", args=[self.pk])
 
     @property
     @cached_attribute
@@ -74,13 +78,26 @@ class Message(models.Model):
 
     @classmethod
     def new_reply(cls, thread, user, content):
+        """
+        Create a new reply for an existing Thread.
+
+        Mark thread as unread for all other participants, and
+        mark thread as read by replier.
+        """
         msg = cls.objects.create(thread=thread, sender=user, content=content)
         thread.userthread_set.exclude(user=user).update(deleted=False, unread=True)
+        thread.userthread_set.filter(user=user).update(deleted=False, unread=False)
         message_sent.send(sender=cls, message=msg, thread=thread, reply=True)
         return msg
 
     @classmethod
     def new_message(cls, from_user, to_users, subject, content):
+        """
+        Create a new Message and Thread.
+
+        Mark thread as unread for all recipients, and
+        mark thread as read and deleted from inbox by creator.
+        """
         thread = Thread.objects.create(subject=subject)
         for user in to_users:
             thread.userthread_set.create(user=user, deleted=False, unread=True)
