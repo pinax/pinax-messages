@@ -1,13 +1,13 @@
-from account.mixins import LoginRequiredMixin
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.views.generic import (
     CreateView,
     DeleteView,
-    DetailView,
     TemplateView,
+    UpdateView,
 )
-from django.views.generic.edit import FormMixin
+
+from account.mixins import LoginRequiredMixin
 
 from .forms import (
     MessageReplyForm,
@@ -32,14 +32,15 @@ class InboxView(LoginRequiredMixin, TemplateView):
         return context
 
 
-class ThreadView(LoginRequiredMixin, FormMixin, DetailView):
+class ThreadView(LoginRequiredMixin, UpdateView):
     """
-    View a single Thread.
+    View a single Thread or POST a reply.
     """
     model = Thread
+    form_class = MessageReplyForm
     context_object_name = "thread"
     template_name = "pinax/messages/thread_detail.html"
-    form_class = MessageReplyForm
+    success_url = reverse_lazy("pinax_messages:inbox")
 
     def get_queryset(self):
         qs = super(ThreadView, self).get_queryset()
@@ -54,32 +55,10 @@ class ThreadView(LoginRequiredMixin, FormMixin, DetailView):
         })
         return kwargs
 
-    def get_context_data(self, **kwargs):
-        context = super(ThreadView, self).get_context_data(**kwargs)
-        context.update({
-            "form": self.get_form()
-        })
-        return context
-
-    def get_success_url(self):
-        return reverse("pinax_messages:inbox")
-
     def get(self, request, *args, **kwargs):
         response = super(ThreadView, self).get(request, *args, **kwargs)
         self.object.userthread_set.filter(user=request.user).update(unread=False)
         return response
-
-    def form_valid(self, form):
-        form.save()
-        return super(ThreadView, self).form_valid(form)
-
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        form = self.get_form()
-        if form.is_valid():
-            return self.form_valid(form)
-        else:
-            return self.form_invalid(form)
 
 
 class MessageCreateView(LoginRequiredMixin, CreateView):
