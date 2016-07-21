@@ -43,8 +43,8 @@ Getting Started
 Include ``pinax-messages`` in your requirements file and add
 ``"pinax.messages"`` to your INSTALLED APPS setting.
 
-Run Django migration (``python manage.py migrate``) so that
-your project recognizes this new app.
+Run Django migration (``python manage.py migrate``) so that the
+database creates the necessary tables for ``pinax-messages``.
 
 Once you have the ``pinax-messages`` installed and migrated,
 hook up the URLs::
