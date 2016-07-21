@@ -43,15 +43,19 @@ Getting Started
 Include ``pinax-messages`` in your requirements file and add
 ``"pinax.messages"`` to your INSTALLED APPS setting.
 
-Once you have the ``pinax-messages`` installed, hook up the URLs::
+Run Django migration (``python manage.py migrate``) so that
+your project recognizes this new app.
 
-    urlpatterns = patterns("",
+Once you have the ``pinax-messages`` installed and migrated,
+hook up the URLs::
+
+    urlpatterns = [
         # some cool URLs
 
-        (r"^messages/", include("pinax.messages.urls", namespace="pinax_messages")),
+        url(r"^messages/", include("pinax.messages.urls", namespace="pinax_messages")),
 
         # some other cool URLs
-    )
+    ]
 
 Now all you need to do is wire up some templates.
 
