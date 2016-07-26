@@ -1,5 +1,3 @@
 include AUTHORS
 include LICENSE
 include README.rst
-recursive-include pinax/messages/static *
-recursive-include pinax/messages/templates *

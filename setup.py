@@ -26,7 +26,7 @@ setup(
     test_suite="runtests.runtests",
     tests_require=[
         "django-test-plus>=1.0.11",
-        "pinax-theme-bootstrap>=7.4.0",
+        "pinax-theme-bootstrap>=7.9.0",
     ],
     install_requires=[
         "django-appconf>=1.0.1",
