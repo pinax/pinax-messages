@@ -10,6 +10,7 @@ from ..models import (
     Message,
     Thread,
 )
+from ..hooks import hookset
 from .test import TestCase
 
 
@@ -213,3 +214,25 @@ class TestTemplateTags(BaseTest):
             Context({"thread": thread, "user": self.brosner}),
             "READ",
         )
+
+
+class TestHookSet(BaseTest):
+    def test_get_user_choices(self):
+        """
+        Ensure all users are returned except for self
+        """
+        with self.assertRaises(TypeError):
+            hookset.get_user_choices()
+
+        user_choices = hookset.get_user_choices(self.brosner)
+        self.assertEqual(len(user_choices), 1)
+        self.assertNotIn(self.brosner, user_choices)
+        self.assertIn(self.jtauber, user_choices)
+
+        #
+        vleong = self.make_user("vleong")
+        user_choices = hookset.get_user_choices(vleong)
+        self.assertEqual(len(user_choices), 2)
+        self.assertNotIn(vleong, user_choices)
+        self.assertIn(self.brosner, user_choices)
+        self.assertIn(self.jtauber, user_choices)
