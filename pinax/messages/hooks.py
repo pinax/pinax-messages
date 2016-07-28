@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 class DefaultHookSet(object):
 
     def get_user_choices(self, user):
-        return get_user_model().objects.all()
+        return get_user_model().objects.exclude(id=user.id)
 
 
 class HookProxy(object):
