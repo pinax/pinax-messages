@@ -229,7 +229,6 @@ class TestHookSet(BaseTest):
         self.assertNotIn(self.brosner, user_choices)
         self.assertIn(self.jtauber, user_choices)
 
-        #
         vleong = self.make_user("vleong")
         user_choices = hookset.get_user_choices(vleong)
         self.assertEqual(len(user_choices), 2)
