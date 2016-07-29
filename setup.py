@@ -15,8 +15,8 @@ setup(
     author_email="developers@pinaxproject.com",
     description="a reusable private user messages application for Django",
     name="pinax-messages",
-    long_description=read("README.rst"),
-    version="0.3",
+    long_description=read("README.md"),
+    version="1.0.0",
     url="http://github.com/pinax/pinax-messages/",
     license="MIT",
     packages=find_packages(),
@@ -26,7 +26,7 @@ setup(
     test_suite="runtests.runtests",
     tests_require=[
         "django-test-plus>=1.0.11",
-        "pinax-theme-bootstrap>=7.9.0",
+        "pinax-theme-bootstrap>=7.10.0",
     ],
     install_requires=[
         "django-appconf>=1.0.1",
