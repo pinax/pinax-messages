@@ -5,6 +5,7 @@ from django.template import (
     Context,
     Template,
 )
+from django.test import override_settings
 
 from ..models import (
     Message,
@@ -76,6 +77,23 @@ class TestMessages(BaseTest):
         self.assertEqual(Thread.ordered([t2, t1, t3]), [t3, t2, t1])
 
 
+@override_settings(
+    TEMPLATES=[
+        {
+            "BACKEND": "django.template.backends.django.DjangoTemplates",
+            "DIRS": ["%s/templates" % os.path.abspath(os.path.dirname(__file__))],
+            "APP_DIRS": False,
+            "OPTIONS": {
+                "debug": True,
+                "context_processors": [
+                    "django.contrib.auth.context_processors.auth",
+                    "pinax_theme_bootstrap.context_processors.theme",
+                    "pinax.messages.context_processors.user_messages",
+                ]
+            }
+        },
+    ]
+)
 class TestMessageViews(BaseTest):
     template_dirs = [
         os.path.join(os.path.dirname(__file__), "templates")
