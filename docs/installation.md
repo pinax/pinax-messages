@@ -4,7 +4,7 @@
 
 * Add `"pinax-messages"` to your `requirements.txt` file or install pinax-messages manually:
 
-```python
+```
 $ pip install pinax-messages
 ```
 
@@ -22,7 +22,7 @@ $ pip install pinax-messages
 
 * Run Django migrations to create `pinax-messages` database tables:
 
-```python
+```
 $ python manage.py migrate
 ```
 
