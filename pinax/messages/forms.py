@@ -18,7 +18,7 @@ class UserModelMultipleChoiceField(forms.ModelMultipleChoiceField):
         return hookset.display_name(obj)
 
 
-class NewMessageForm(forms.Form):
+class NewMessageForm(forms.ModelForm):
 
     subject = forms.CharField()
     to_user = UserModelChoiceField(queryset=get_user_model().objects.none)
