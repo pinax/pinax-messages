@@ -1,5 +1,9 @@
 # ChangeLog
 
+## 1.0.1
+
+- Fix thread delete view with correct template path & success URL
+
 ## 1.0.0
 
 - add documentation
