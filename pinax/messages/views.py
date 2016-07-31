@@ -96,7 +96,7 @@ class ThreadDeleteView(LoginRequiredMixin, DeleteView):
     Delete a thread.
     """
     model = Thread
-    success_url = "pinax_messages:inbox"
+    success_url = reverse_lazy("pinax_messages:inbox")
     template_name = "pinax/messages/thread_confirm_delete.html"
 
     def delete(self, request, *args, **kwargs):
