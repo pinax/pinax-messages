@@ -30,10 +30,9 @@ This app was formerly named `user-messages` but was renamed after being donated 
 
 Follow the steps outlined in [Pinax Messages Documentation](docs/index.md) to get started.
 
+
 ## Documentation
 
-Documentation
-----------------
 
 The Pinax documentation is available at [http://pinaxproject.com/pinax/](http://pinaxproject.com/pinax/). The `pinax-messages ` documentation can be found [here](https://github.com/pinax/pinax-messages/blob/master/docs/index.md).
 
