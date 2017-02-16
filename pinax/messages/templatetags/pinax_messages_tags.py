@@ -9,6 +9,7 @@ register = template.Library()
 def unread(thread, user):
     return bool(thread.userthread_set.filter(user=user, unread=True))
 
+
 @register.filter
 def unread_threads(user):
     return len(Thread.unread(user))
