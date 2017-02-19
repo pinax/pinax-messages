@@ -16,6 +16,6 @@ def unread(thread, user):
 @register.filter
 def unread_threads(user):
     '''
-    Return the number of unread threads for this user, useful for highlighting on an account bar for example.
+    Return the number of Threads with unread messages for this user, useful for highlighting on an account bar for example.
     '''
     return len(Thread.unread(user))
