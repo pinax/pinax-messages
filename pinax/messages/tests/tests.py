@@ -233,6 +233,32 @@ class TestTemplateTags(BaseTest):
             "READ",
         )
 
+    def test_unread_threads(self):
+        """
+        Ensure `unread_threads` template_tag produces correct results.
+        """
+        thread = Message.new_message(
+            self.brosner,
+            [self.jtauber],
+            "Why did you break the internet?", "I demand to know.").thread
+
+        Message.new_reply(thread, self.jtauber, "Replying to the first message")
+        Message.new_reply(thread, self.brosner, "Replying again, so that there are two unread messages on one thread")
+
+        thread = Message.new_message(
+            self.brosner,
+            [self.jtauber],
+            "Second message", "So there are two.").thread
+        tmpl = """
+               {% load pinax_messages_tags %}
+               {% if user|unread_threads %}{{ user|unread_threads }}{% endif %}
+               """
+        self.assert_renders(
+            tmpl,
+            Context({"thread": thread, "user": self.jtauber}),
+            '2'
+        )
+
 
 class TestHookSet(BaseTest):
     def test_get_user_choices(self):
