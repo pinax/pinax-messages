@@ -18,4 +18,4 @@ def unread_threads(user):
     '''
     Return the number of Threads with unread messages for this user, useful for highlighting on an account bar for example.
     '''
-    return len(Thread.unread(user))
+    return Thread.unread(user).count()
