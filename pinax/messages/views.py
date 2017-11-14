@@ -7,7 +7,8 @@ from django.views.generic import (
     UpdateView,
 )
 
-from account.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 from .forms import (
     MessageReplyForm,
@@ -17,7 +18,8 @@ from .forms import (
 from .models import Thread
 
 
-class InboxView(LoginRequiredMixin, TemplateView):
+@method_decorator(login_required, name='dispatch')
+class InboxView(TemplateView):
     """
     View inbox thread list.
     """
@@ -31,7 +33,8 @@ class InboxView(LoginRequiredMixin, TemplateView):
         })
         return context
 
-
+    
+@method_decorator(login_required, name='dispatch')
 class ThreadView(LoginRequiredMixin, UpdateView):
     """
     View a single Thread or POST a reply.
@@ -61,6 +64,7 @@ class ThreadView(LoginRequiredMixin, UpdateView):
         return response
 
 
+@method_decorator(login_required, name='dispatch')
 class MessageCreateView(LoginRequiredMixin, CreateView):
     """
     Create a new thread message.
@@ -91,6 +95,7 @@ class MessageCreateView(LoginRequiredMixin, CreateView):
         return kwargs
 
 
+@method_decorator(login_required, name='dispatch')
 class ThreadDeleteView(LoginRequiredMixin, DeleteView):
     """
     Delete a thread.
