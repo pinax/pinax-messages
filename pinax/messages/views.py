@@ -35,7 +35,7 @@ class InboxView(TemplateView):
 
     
 @method_decorator(login_required, name='dispatch')
-class ThreadView(LoginRequiredMixin, UpdateView):
+class ThreadView(UpdateView):
     """
     View a single Thread or POST a reply.
     """
@@ -65,7 +65,7 @@ class ThreadView(LoginRequiredMixin, UpdateView):
 
 
 @method_decorator(login_required, name='dispatch')
-class MessageCreateView(LoginRequiredMixin, CreateView):
+class MessageCreateView(CreateView):
     """
     Create a new thread message.
     """
@@ -96,7 +96,7 @@ class MessageCreateView(LoginRequiredMixin, CreateView):
 
 
 @method_decorator(login_required, name='dispatch')
-class ThreadDeleteView(LoginRequiredMixin, DeleteView):
+class ThreadDeleteView(DeleteView):
     """
     Delete a thread.
     """
