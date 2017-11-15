@@ -30,7 +30,6 @@ setup(
     ],
     install_requires=[
         "django-appconf>=1.0.1",
-        "django-user-accounts>=1.3.1"
     ],
     classifiers=[
         "Development Status :: 4 - Beta",
