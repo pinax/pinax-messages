@@ -1,5 +1,4 @@
 from django import forms
-
 from django.contrib.auth import get_user_model
 
 from .hooks import hookset
@@ -21,7 +20,7 @@ class UserModelMultipleChoiceField(forms.ModelMultipleChoiceField):
 class NewMessageForm(forms.ModelForm):
 
     subject = forms.CharField()
-    to_user = UserModelChoiceField(queryset=get_user_model().objects.none)
+    to_user = UserModelChoiceField(queryset=get_user_model().objects.none())
     content = forms.CharField(widget=forms.Textarea)
 
     def __init__(self, *args, **kwargs):
@@ -40,12 +39,12 @@ class NewMessageForm(forms.ModelForm):
 
     class Meta:
         model = Message
-        fields = ['to_user', 'subject', 'content']
+        fields = ["to_user", "subject", "content"]
 
 
 class NewMessageFormMultiple(forms.ModelForm):
     subject = forms.CharField()
-    to_user = UserModelMultipleChoiceField(get_user_model().objects.none)
+    to_user = UserModelMultipleChoiceField(get_user_model().objects.none())
     content = forms.CharField(widget=forms.Textarea)
 
     def __init__(self, *args, **kwargs):
@@ -64,7 +63,7 @@ class NewMessageFormMultiple(forms.ModelForm):
 
     class Meta:
         model = Message
-        fields = ['to_user', 'subject', 'content']
+        fields = ["to_user", "subject", "content"]
 
 
 class MessageReplyForm(forms.ModelForm):
@@ -80,4 +79,4 @@ class MessageReplyForm(forms.ModelForm):
 
     class Meta:
         model = Message
-        fields = ['content']
+        fields = ["content"]
