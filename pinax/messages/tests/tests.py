@@ -135,7 +135,15 @@ class TestMessageViews(BaseTest):
         with self.login(self.brosner):
             response = self.get("pinax_messages:message_user_create", user_id=self.jtauber.id)
             self.assertEqual(response.status_code, 200)
-            self.assertContains(response, "selected=\"selected\">jtauber</option>")
+            # Django v1.11+ use HTML5 boolean syntax, i.e.
+            # <option value="2" selected>jtauber</option>
+            #    versus XHTML syntax:
+            # <option value="2" selected="selected">jtauber</option>
+            regex = b"selected(\")*>jtauber</option>"
+            try:
+                self.assertRegex(self.last_response.content, regex)
+            except AttributeError:
+                self.assertRegexpMatches(self.last_response.content, regex)
 
     def test_sender_get_thread_detail(self):
         """
