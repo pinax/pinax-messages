@@ -73,7 +73,6 @@ setup(
     install_requires=[
         "django>=1.8",
         "django-appconf>=1.0.1",
-        "django-user-accounts>=1.3.1"
     ],
     tests_require=[
         "django-test-plus>=1.0.11",
