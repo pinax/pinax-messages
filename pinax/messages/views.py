@@ -1,37 +1,40 @@
 from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponseRedirect
+from django.utils.decorators import method_decorator
 from django.views.generic import (
     CreateView,
     DeleteView,
     TemplateView,
     UpdateView
 )
-from django.utils.decorators import method_decorator
-
-try:
-        from account.decorators import login_required
-except ImportError:
-        from django.contrib.auth.decorators import login_required
 
 from .forms import MessageReplyForm, NewMessageForm, NewMessageFormMultiple
 from .models import Thread
 
+try:
+    from account.decorators import login_required
+except:  # noqa
+    from django.contrib.auth.decorators import login_required
 
-@method_decorator(login_required, name='dispatch')
+
 class InboxView(TemplateView):
     """
     View inbox thread list.
     """
     template_name = "pinax/messages/inbox.html"
 
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(InboxView, self).dispatch(*args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super(InboxView, self).get_context_data(**kwargs)
-        if self.kwargs.get('deleted', None):
+        if self.kwargs.get("deleted", None):
             threads = Thread.ordered(Thread.deleted(self.request.user))
-            folder = 'deleted'
+            folder = "deleted"
         else:
             threads = Thread.ordered(Thread.inbox(self.request.user))
-            folder = 'inbox'
+            folder = "inbox"
 
         context.update({
             "folder": folder,
@@ -41,7 +44,6 @@ class InboxView(TemplateView):
         return context
 
 
-@method_decorator(login_required, name='dispatch')
 class ThreadView(UpdateView):
     """
     View a single Thread or POST a reply.
@@ -51,6 +53,10 @@ class ThreadView(UpdateView):
     context_object_name = "thread"
     template_name = "pinax/messages/thread_detail.html"
     success_url = reverse_lazy("pinax_messages:inbox")
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ThreadView, self).dispatch(*args, **kwargs)
 
     def get_queryset(self):
         qs = super(ThreadView, self).get_queryset()
@@ -71,12 +77,15 @@ class ThreadView(UpdateView):
         return response
 
 
-@method_decorator(login_required, name='dispatch')
 class MessageCreateView(CreateView):
     """
     Create a new thread message.
     """
     template_name = "pinax/messages/message_create.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(MessageCreateView, self).dispatch(*args, **kwargs)
 
     def get_form_class(self):
         if self.form_class is None:
@@ -102,7 +111,6 @@ class MessageCreateView(CreateView):
         return kwargs
 
 
-@method_decorator(login_required, name='dispatch')
 class ThreadDeleteView(DeleteView):
     """
     Delete a thread.
@@ -110,6 +118,10 @@ class ThreadDeleteView(DeleteView):
     model = Thread
     success_url = reverse_lazy("pinax_messages:inbox")
     template_name = "pinax/messages/thread_confirm_delete.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(ThreadDeleteView, self).dispatch(*args, **kwargs)
 
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()

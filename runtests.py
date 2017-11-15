@@ -13,7 +13,6 @@ DEFAULT_SETTINGS = dict(
         "django.contrib.contenttypes",
         "django.contrib.sites",
         "django.contrib.sessions",
-        "account",
         "pinax_theme_bootstrap",
         "bootstrapform",
         "pinax.messages",
@@ -33,9 +32,6 @@ DEFAULT_SETTINGS = dict(
     SITE_ID=1,
     ROOT_URLCONF="pinax.messages.tests.urls",
     SECRET_KEY="notasecret",
-    AUTHENTICATION_BACKENDS=[
-        "account.auth_backends.UsernameAuthenticationBackend",
-    ],
     TEMPLATES=[
         {
             "BACKEND": "django.template.backends.django.DjangoTemplates",
