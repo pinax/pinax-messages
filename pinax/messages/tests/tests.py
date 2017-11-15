@@ -240,7 +240,7 @@ class TestTemplateTags(BaseTest):
         """
         Ensure `unread_threads` template_tag produces correct results for one unread message
         """
-        thread = Message.new_message(
+        Message.new_message(
             self.brosner,
             [self.jtauber],
             "Why did you break the internet?", "I demand to know.").thread
@@ -251,7 +251,7 @@ class TestTemplateTags(BaseTest):
                """
         self.assert_renders(
             tmpl,
-            Context({"thread": thread, "user": self.jtauber}),
+            Context({"user": self.jtauber}),
             "1"
         )
 
@@ -267,7 +267,7 @@ class TestTemplateTags(BaseTest):
         Message.new_reply(thread, self.jtauber, "Replying to the first message")
         Message.new_reply(thread, self.brosner, "Replying again, so that there are two unread messages on one thread")
 
-        thread = Message.new_message(
+        Message.new_message(
             self.brosner,
             [self.jtauber],
             "Second message", "So there are two.").thread
@@ -277,7 +277,7 @@ class TestTemplateTags(BaseTest):
                """
         self.assert_renders(
             tmpl,
-            Context({"thread": thread, "user": self.jtauber}),
+            Context({"user": self.jtauber}),
             "2"
         )
 
@@ -298,7 +298,7 @@ class TestTemplateTags(BaseTest):
                """
         self.assert_renders(
             tmpl,
-            Context({"thread": thread, "user": self.jtauber}),
+            Context({"user": self.jtauber}),
             "0"
         )
 
