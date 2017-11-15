@@ -25,7 +25,7 @@
 
 * [Installation](#installation)
 * [Usage](#usage)
-* [Template Tags](#template-tags)
+* [Template Tags](#template-tags-and-filters)
 * [Reference Guide](#reference-guide)
 * [Change Log](#change-log)
 * [Project History](#project-history)
