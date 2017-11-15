@@ -111,13 +111,20 @@ Message.new_message(from_user=self.request.user, to_users=[user], subject=subjec
 
 ### Template Context Variables
 
-`pinax-messages` provides two context variables using a template context processor. In order to access these in your templates, add `user_messages` to your `TEMPLATE_CONTEXT_PROCESSORS`:
+`pinax-messages` provides two context variables using a template context processor. In order to access these in your templates, add `user_messages` to your `TEMPLATES` settings:
 
 ```python
-TEMPLATE_CONTEXT_PROCESSORS = [
-    ...
-    "pinax.messages.context_processors.user_messages",
-    ...
+TEMPLATES = [
+    {
+        # ...
+        "OPTIONS": {
+            # ...
+            "context_processors": [
+                # ...
+                "pinax.messages.context_processors.user_messages"
+            ],
+        },
+    },
 ]
 ```
 
