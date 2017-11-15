@@ -1,17 +1,11 @@
 import os
 
 # from django.conf import settings
-from django.template import (
-    Context,
-    Template,
-)
+from django.template import Context, Template
 from django.test import override_settings
 
-from ..models import (
-    Message,
-    Thread,
-)
 from ..hooks import hookset
+from ..models import Message, Thread
 from .test import TestCase
 
 

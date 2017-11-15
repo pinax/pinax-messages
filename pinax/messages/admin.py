@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import UserThread, Message
+from .models import Message, UserThread
 
 
 class UserThreadAdmin(admin.ModelAdmin):

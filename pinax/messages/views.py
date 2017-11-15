@@ -4,16 +4,12 @@ from django.views.generic import (
     CreateView,
     DeleteView,
     TemplateView,
-    UpdateView,
+    UpdateView
 )
 
 from account.mixins import LoginRequiredMixin
 
-from .forms import (
-    MessageReplyForm,
-    NewMessageForm,
-    NewMessageFormMultiple,
-)
+from .forms import MessageReplyForm, NewMessageForm, NewMessageFormMultiple
 from .models import Thread
 
 
