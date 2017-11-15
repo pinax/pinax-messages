@@ -228,6 +228,10 @@ These URL names are available when using pinax-messages urls.py:
 
 ## Change Log
 
+### 1.2.0
+
+* Add `unread_thread_count` template filter
+
 ### 1.1.0
 
 * Add Django 2.0 compatibility testing
