@@ -25,8 +25,16 @@ class InboxView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(InboxView, self).get_context_data(**kwargs)
+        if self.kwargs.get('deleted', None):
+            threads = Thread.ordered(Thread.deleted(self.request.user))
+            folder = 'deleted'
+        else:
+            threads = Thread.ordered(Thread.inbox(self.request.user))
+            folder = 'inbox'
+
         context.update({
-            "threads": Thread.ordered(Thread.inbox(self.request.user)),
+            "folder": folder,
+            "threads": threads,
             "threads_unread": Thread.ordered(Thread.unread(self.request.user))
         })
         return context
