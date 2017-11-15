@@ -1,57 +1,250 @@
+![](http://pinaxproject.com/pinax-design/patches/pinax-messages.svg)
+
 # Pinax Messages
 
-[![](http://slack.pinaxproject.com/badge.svg)](http://slack.pinaxproject.com/)
-[![](https://img.shields.io/travis/pinax/pinax-messages.svg)](https://travis-ci.org/pinax/pinax-messages)
-[![](https://img.shields.io/coveralls/pinax/pinax-messages.svg)](https://coveralls.io/r/pinax/pinax-messages)
-[![](https://img.shields.io/pypi/dm/pinax-messages.svg)](https://pypi.python.org/pypi/pinax-messages/)
 [![](https://img.shields.io/pypi/v/pinax-messages.svg)](https://pypi.python.org/pypi/pinax-messages/)
 [![](https://img.shields.io/badge/license-MIT-blue.svg)](https://pypi.python.org/pypi/pinax-messages/)
 
-## Pinax
+[![CircleCi](https://img.shields.io/circleci/project/github/pinax/pinax-messages.svg)](https://circleci.com/gh/pinax/pinax-messages)
+[![Codecov](https://img.shields.io/codecov/c/github/pinax/pinax-messages.svg)](https://codecov.io/gh/pinax/pinax-messages)
+[![](https://img.shields.io/github/contributors/pinax/pinax-messages.svg)](https://github.com/pinax/pinax-messages/graphs/contributors)
+[![](https://img.shields.io/github/issues-pr/pinax/pinax-messages.svg)](https://github.com/pinax/pinax-messages/pulls)
+[![](https://img.shields.io/github/issues-pr-closed/pinax/pinax-messages.svg)](https://github.com/pinax/pinax-messages/pulls?q=is%3Apr+is%3Aclosed)
 
-[Pinax](http://pinaxproject.com/pinax/) is an open-source platform built on the
-Django Web Framework. It is an ecosystem of reusable Django apps, themes, and
-starter project templates.
-
-This app is part of the Pinax ecosystem and is designed for use both with and
-independently of other Pinax apps.
-
-## pinax-messages
+[![](http://slack.pinaxproject.com/badge.svg)](http://slack.pinaxproject.com/)
 
 `pinax-messages` is an app for providing private user-to-user threaded messaging.
 
 
-## History
+### Supported Django and Python Versions
+
+* Django 1.8, 1.10, 1.11, and 2.0
+* Python 2.7, 3.4, 3.5, and 3.6
+
+## Table of Contents
+
+* [Installation](#installation)
+* [Usage](#usage)
+* [Template Tags](#template-tags)
+* [Reference Guide](#reference-guide)
+* [Change Log](#change-log)
+* [Project History](#project-history)
+* [About Pinax](#about-pinax)
+
+
+## Installation
+
+### Install `pinax-messages`
+
+* Add `"pinax-messages"` to your `requirements.txt` file or install pinax-messages manually:
+
+```
+$ pip install pinax-messages
+```
+
+* Add `"pinax.messages"` to your `INSTALLED_APPS` setting:
+
+
+    INSTALLED_APPS = (
+        ...
+        "pinax.messages"
+        ...
+    )
+
+### Run Migrations
+
+* Run Django migrations to create `pinax-messages` database tables:
+
+```
+$ python manage.py migrate
+```
+
+### Hook Up URLs
+
+Add `pinax.messages.urls` to your project urlpatterns:
+
+    urlpatterns = [
+        ...
+        url(r"^messages/", include("pinax.messages.urls", namespace="pinax_messages")),
+        ...
+    ]
+
+
+## Usage
+
+`pinax-messages` handles user-to-user private threaded messaging primarily by the inclusion of template snippets.
+These snippets fall into three categories: view message inbox (all threads), view message thread, and create (or respond to) a message.
+
+### Access Inbox
+
+Place this snippet wherever a "Message Inbox" link is needed for viewing user message inbox:
+
+```html
+<a href="{% url 'pinax_messages:inbox' %}"><i class="fa fa-envelope"></i> {% trans "Message Inbox" %}</a>
+```
+
+### View Message Thread
+
+Place this snippet wherever you have need to view a specific message thread:
+
+```html
+<a href="{% url 'pinax_messages:thread_detail' thread.pk %}"><i class="fa fa-envelope"></i> {% trans "View Message Thread" %}</a>
+```
+
+### Create Message - Template
+
+Add the following line to an object template in order to provide a button for messaging a user associated with `object`:
+
+```html
+<a href="{% url "pinax_messages:message_user_create" user_id=object.user.id %}" class="btn btn-default">Message this user</a>
+```
+
+### Create Message - Code
+
+Use the following code to create a new message programmatically. Note that `to_users` (message recipients) is a list, allowing messages sent to multiple users.
+
+```python
+from pinax.messages.models import Message
+
+Message.new_message(from_user=self.request.user, to_users=[user], subject=subject, content=content)
+```
+
+### Template Context Variables
+
+`pinax-messages` provides two context variables using a template context processor. In order to access these in your templates, add `user_messages` to your `TEMPLATE_CONTEXT_PROCESSORS`:
+
+```python
+TEMPLATE_CONTEXT_PROCESSORS = [
+    ...
+    "pinax.messages.context_processors.user_messages",
+    ...
+]
+```
+
+The following context variables are available, and work with the current authenticated user:
+
+* `inbox_threads` — all message threads for current user
+* `unread_threads` — unread message threads for current user
+
+#### Templates
+
+[Example templates](https://github.com/pinax/pinax-theme-bootstrap/tree/master/pinax_theme_bootstrap/templates/pinax/messages) are available in the `pinax-theme-bootstrap` [project](https://github.com/pinax/pinax-theme-bootstrap/tree/master/pinax_theme_bootstrap).
+
+
+## Template Tags and Filters
+
+### unread
+
+Determines if a message thread has unread messages for a user.
+
+**Argument**: `user`
+
+For instance if there are unread messages in a thread, change the CSS class accordingly:
+
+```html
+{% load pinax_messages_tags %}
+
+    <div class="thread {% if thread|unread:user %}unread{% endif %}">
+    ...
+    </div>
+```
+
+## Reference Guide
+
+### URL–View–Template Matrix
+
+| URL Name                             | View                  | Template              |
+| ------------------------------------ | --------------------- | --------------------- |
+| `pinax-messages:inbox`               | `InboxView()`         | `inbox.html`          |
+| `pinax-messages:message_create`      | `MessageCreateView()` | `message_create.html` |
+| `pinax-messages:message_user_create` | `MessageCreateView()` | `message_create.html` |
+| `pinax-messages:thread_detail`       | `ThreadView()`        | `thread_detail.html`  |
+| `pinax-messages:thread_delete`       | `ThreadDeleteView()`  | N/A                   |
+
+### URL Names
+
+These URL names are available when using pinax-messages urls.py:
+
+`pinax-messages:inbox` — Inbox view
+
+`pinax-messages:message_create` — Create new message
+
+`pinax-messages:message_user_create` — Create new message to specific user
+
+`pinax-messages:thread_detail` — View message thread, requires thread PK
+
+`pinax-messages:thread_delete` — Delete message thread, requires thread PK
+
+### Views
+
+`InboxView` - Display all message threads
+
+`MessageCreateView` — Create a new message thread
+
+`ThreadView` — View specific message thread
+
+`ThreadDeleteView` — Delete specific message thread
+
+### Forms
+
+`NewMessageForm` — creates a new message thread to a single user
+
+`NewMessageFormMultiple` — creates a new message thread to multiple users
+
+`MessageReplyForm` - creates a reply to a message thread
+
+### Templates
+
+[Example templates](https://github.com/pinax/pinax-theme-bootstrap/tree/master/pinax_theme_bootstrap/templates/pinax/messages) are found in the `pinax-theme-bootstrap` [project](https://github.com/pinax/pinax-theme-bootstrap/tree/master/pinax_theme_bootstrap).
+
+`pinax/messages/inbox.html` — Displays inbox message threads
+
+`pinax/messages/thread_detail.html` — Show message thread and allow response
+
+`pinax/messages/message_create.html` — New message form
+
+### Signals
+
+`message_sent` — `providing_args = ["message", "thread", "reply"]`
+
+
+## Change Log
+
+### 1.1.0
+
+* Add Django 2.0 compatibility testing
+* Drop Django 1.9 and Python 3.3 support
+* Move documentation into README
+* Convert CI and coverage to CircleCi and CodeCov
+* Add PyPi-compatible long description
+
+### 1.0.1
+
+- Fix thread delete view with correct template path and success URL
+
+### 1.0.0
+
+- add documentation
+
+### 0.3
+
+- convert to Django generic CBVs
+- various fixes and cleanup
+
+### 0.1
+
+- initial release
+
+
+## Project History
 
 This app was formerly named `user-messages` but was renamed after being donated to Pinax from Eldarion.
 
 
-## Getting Started
+## About Pinax
 
-Follow the steps outlined in [Pinax Messages Documentation](docs/index.md) to get started.
+Pinax is an open-source platform built on the Django Web Framework. It is an ecosystem of reusable Django apps, themes, and starter project templates. This collection can be found at http://pinaxproject.com.
 
-
-## Documentation
-
-
-The Pinax documentation is available at [http://pinaxproject.com/pinax/](http://pinaxproject.com/pinax/). The `pinax-messages ` documentation can be found [here](https://github.com/pinax/pinax-messages/blob/master/docs/index.md).
-
-
-
-## Contribute
-
-See [this blog post](http://blog.pinaxproject.com/2016/02/26/recap-february-pinax-hangout/) including a video, or our [How to Contribute](http://pinaxproject.com/pinax/how_to_contribute/) section for an overview on how contributing to Pinax works. For concrete contribution ideas, please see our [Ways to Contribute/What We Need Help With](http://pinaxproject.com/pinax/ways_to_contribute/) section.
-
-In case of any questions we recommend you [join our Pinax Slack team](http://slack.pinaxproject.com) and ping us there instead of creating an issue on GitHub. Creating issues on GitHub is of course also valid but we are usually able to help you faster if you ping us in Slack.
-
-We also highly recommend reading our [Open Source and Self-Care blog post](http://blog.pinaxproject.com/2016/01/19/open-source-and-self-care/).
-
-
-## Code of Conduct
-
-In order to foster a kind, inclusive, and harassment-free community, the Pinax Project has a code of conduct, which can be found here http://pinaxproject.com/pinax/code_of_conduct/. We ask you to treat everyone as a smart human programmer that shares an interest in Python, Django, and Pinax with you.
-
-
-## Pinax Project Blog and Twitter
+The Pinax documentation is available at http://pinaxproject.com/pinax/. If you would like to help us improve our documentation or write more documentation, please join our Pinax Project Slack team and let us know!
 
 For updates and news regarding the Pinax Project, please follow us on Twitter at @pinaxproject and check out our blog http://blog.pinaxproject.com.
