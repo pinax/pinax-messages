@@ -254,8 +254,9 @@ class TestForms(BaseTest):
 
     def test_new_message_form(self):
         """Verify form instantiation without a hookset for `to_user` queryset"""
-        NewMessageForm(user=self.brosner, initial={"to_user": self.brosner.pk})
+        NewMessageForm(user=self.jtauber, initial={"to_user": self.brosner.pk})
 
     def test_new_message_form_multiple(self):
         """Verify form instantiation without a hookset for `to_user` queryset"""
-        NewMessageFormMultiple(user=self.brosner, initial={"to_user": self.brosner.pk})
+        self.paltman = self.make_user("paltman")
+        NewMessageFormMultiple(user=self.jtauber, initial={"to_user": [self.brosner.pk, self.paltman.pk]})
