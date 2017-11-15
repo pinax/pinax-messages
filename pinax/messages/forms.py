@@ -40,7 +40,7 @@ class NewMessageForm(forms.ModelForm):
 
     class Meta:
         model = Message
-        fields = ['to_user', 'subject', 'content']
+        fields = ["to_user", "subject", "content"]
 
 
 class NewMessageFormMultiple(forms.ModelForm):
@@ -64,7 +64,7 @@ class NewMessageFormMultiple(forms.ModelForm):
 
     class Meta:
         model = Message
-        fields = ['to_user', 'subject', 'content']
+        fields = ["to_user", "subject", "content"]
 
 
 class MessageReplyForm(forms.ModelForm):
@@ -80,4 +80,4 @@ class MessageReplyForm(forms.ModelForm):
 
     class Meta:
         model = Message
-        fields = ['content']
+        fields = ["content"]
