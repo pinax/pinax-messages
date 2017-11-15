@@ -6,9 +6,12 @@ from django.views.generic import (
     TemplateView,
     UpdateView,
 )
-
-from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+
+try:
+        from account.decorators import login_required
+except ImportError:
+        from django.contrib.auth.decorators import login_required
 
 from .forms import (
     MessageReplyForm,
