@@ -302,6 +302,28 @@ class TestTemplateTags(BaseTest):
             "0"
         )
 
+    def test_unread_thread_count_within_with_assignment(self):
+        """
+        Ensure `unread_threads` template_tag produces correct results
+        for one unread message when value is assigned within a {% with ... %} block.
+        """
+        Message.new_message(
+            self.brosner,
+            [self.jtauber],
+            "Why did you break the internet?", "I demand to know.").thread
+
+        tmpl = """
+               {% load pinax_messages_tags %}
+               {% with user|unread_thread_count as user_unread %}
+               {% if user_unread %}{{ user_unread }}{% endif %}
+               {% endwith %}
+               """
+        self.assert_renders(
+            tmpl,
+            Context({"user": self.jtauber}),
+            "1"
+        )
+
 
 class TestHookSet(BaseTest):
     def test_get_user_choices(self):
