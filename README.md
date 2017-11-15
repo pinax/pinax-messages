@@ -160,11 +160,13 @@ For instance if there are unread messages in a thread, change the CSS class acco
 ```html
 {% load pinax_messages_tags %}
 
-    <li class="{% if user|unread_threads %}unread{% endif %}">
+    {% with user|unread_thread_count as user_unread %}
+    <li class="{% if user_unread %}unread{% endif %}">
         <a href="{% url 'pinax_messages:inbox' %}"><i class="fa fa-envelope"></i> {% trans "Messages" %}
-            {% if user|unread_threads %}<sup>{{ user|unread_threads }}</sup>{% endif %}
+            {% if user_unread %}<sup>{{ user_unread }}</sup>{% endif %}
         </a>
     </li>        
+    {% endwith %}
 ```
 
 ## Reference Guide
