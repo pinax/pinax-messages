@@ -4,6 +4,7 @@ import os
 from django.template import Context, Template
 from django.test import override_settings
 
+from ..forms import NewMessageForm, NewMessageFormMultiple
 from ..hooks import hookset
 from ..models import Message, Thread
 from .test import TestCase
@@ -247,3 +248,14 @@ class TestHookSet(BaseTest):
         self.assertNotIn(vleong, user_choices)
         self.assertIn(self.brosner, user_choices)
         self.assertIn(self.jtauber, user_choices)
+
+
+class TestForms(BaseTest):
+
+    def test_new_message_form(self):
+        """Verify form instantiation without a hookset for `to_user` queryset"""
+        NewMessageForm(user=self.brosner, initial={"to_user": self.brosner.pk})
+
+    def test_new_message_form_multiple(self):
+        """Verify form instantiation without a hookset for `to_user` queryset"""
+        NewMessageFormMultiple(user=self.brosner, initial={"to_user": self.brosner.pk})
