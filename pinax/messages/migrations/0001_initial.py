@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, serialize=False, verbose_name='ID', primary_key=True)),
                 ('sent_at', models.DateTimeField(default=django.utils.timezone.now)),
                 ('content', models.TextField()),
-                ('sender', models.ForeignKey(to=settings.AUTH_USER_MODEL, related_name='sent_messages')),
+                ('sender', models.ForeignKey(to=settings.AUTH_USER_MODEL, related_name='sent_messages', on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': ('sent_at',),
@@ -38,8 +38,8 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, serialize=False, verbose_name='ID', primary_key=True)),
                 ('unread', models.BooleanField()),
                 ('deleted', models.BooleanField()),
-                ('thread', models.ForeignKey(to='pinax_messages.Thread')),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('thread', models.ForeignKey(to='pinax_messages.Thread', on_delete=models.CASCADE)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)),
             ],
         ),
         migrations.AddField(
@@ -50,6 +50,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='message',
             name='thread',
-            field=models.ForeignKey(to='pinax_messages.Thread', related_name='messages'),
+            field=models.ForeignKey(to='pinax_messages.Thread', related_name='messages', on_delete=models.CASCADE),
         ),
     ]
