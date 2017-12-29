@@ -1,8 +1,8 @@
 from __future__ import unicode_literals
 
 from django.conf import settings
-from django.core.urlresolvers import reverse
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.encoding import python_2_unicode_compatible
 
@@ -64,8 +64,8 @@ class Thread(models.Model):
 
 class UserThread(models.Model):
 
-    thread = models.ForeignKey(Thread)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    thread = models.ForeignKey(Thread, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     unread = models.BooleanField()
     deleted = models.BooleanField()
@@ -73,9 +73,9 @@ class UserThread(models.Model):
 
 class Message(models.Model):
 
-    thread = models.ForeignKey(Thread, related_name="messages")
+    thread = models.ForeignKey(Thread, related_name="messages", on_delete=models.CASCADE)
 
-    sender = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="sent_messages")
+    sender = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="sent_messages", on_delete=models.CASCADE)
     sent_at = models.DateTimeField(default=timezone.now)
 
     content = models.TextField()

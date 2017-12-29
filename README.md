@@ -3,7 +3,6 @@
 # Pinax Messages
 
 [![](https://img.shields.io/pypi/v/pinax-messages.svg)](https://pypi.python.org/pypi/pinax-messages/)
-[![](https://img.shields.io/badge/license-MIT-blue.svg)](https://pypi.python.org/pypi/pinax-messages/)
 
 [![CircleCi](https://img.shields.io/circleci/project/github/pinax/pinax-messages.svg)](https://circleci.com/gh/pinax/pinax-messages)
 [![Codecov](https://img.shields.io/codecov/c/github/pinax/pinax-messages.svg)](https://codecov.io/gh/pinax/pinax-messages)
@@ -12,27 +11,51 @@
 [![](https://img.shields.io/github/issues-pr-closed/pinax/pinax-messages.svg)](https://github.com/pinax/pinax-messages/pulls?q=is%3Apr+is%3Aclosed)
 
 [![](http://slack.pinaxproject.com/badge.svg)](http://slack.pinaxproject.com/)
-
-`pinax-messages` is an app for providing private user-to-user threaded messaging.
-
-
-### Supported Django and Python Versions
-
-* Django 1.8, 1.10, 1.11, and 2.0
-* Python 2.7, 3.4, 3.5, and 3.6
+[![](https://img.shields.io/badge/license-MIT-blue.svg)](https://pypi.python.org/pypi/pinax-messages/)
 
 ## Table of Contents
 
-* [Installation](#installation)
-* [Usage](#usage)
-* [Template Tags](#template-tags-and-filters)
-* [Reference Guide](#reference-guide)
-* [Change Log](#change-log)
-* [Project History](#project-history)
 * [About Pinax](#about-pinax)
+* [Overview](#overview)
+  * [History](#history)
+  * [Supported Django and Python versions](#supported-django-and-python-versions)
+* [Documentation](#documentation)
+  * [Installation](#installation)
+  * [Usage](#usage)
+  * [Template Tags](#template-tags-and-filters)
+  * [Reference Guide](#reference-guide)
+* [Change Log](#change-log)
+* [Contribute](#contribute)
+* [Code of Conduct](#code-of-conduct)
+* [Connect with Pinax](#connect-with-pinax)
+* [License](#license)
+
+## About Pinax
+
+Pinax is an open-source platform built on the Django Web Framework. It is an ecosystem of reusable
+Django apps, themes, and starter project templates. This collection can be found at http://pinaxproject.com.
+
+## pinax-messages
+
+### Overview
+
+`pinax-messages` is an app for providing private user-to-user threaded messaging.
+
+#### History
+
+This app was formerly named `user-messages` but was renamed after being donated to Pinax from Eldarion.
+
+#### Supported Django and Python versions
+
+Django \ Python | 2.7 | 3.4 | 3.5 | 3.6
+--------------- | --- | --- | --- | ---
+1.11 |  *  |  *  |  *  |  *  
+2.0  |     |  *  |  *  |  *
 
 
-## Installation
+## Documentation
+
+### Installation
 
 ### Install `pinax-messages`
 
@@ -237,6 +260,11 @@ These URL names are available when using pinax-messages urls.py:
 
 ## Change Log
 
+### 2.0.0
+
+Standardize documentation layout
+Drop Django v1.8, v1.10 support
+
 ### 1.2.0
 
 * Add `unread_thread_count` template filter
@@ -267,15 +295,32 @@ These URL names are available when using pinax-messages urls.py:
 - initial release
 
 
-## Project History
+## Contribute
 
-This app was formerly named `user-messages` but was renamed after being donated to Pinax from Eldarion.
+For an overview on how contributing to Pinax works read this [blog post](http://blog.pinaxproject.com/2016/02/26/recap-february-pinax-hangout/)
+and watch the included video, or read our [How to Contribute](http://pinaxproject.com/pinax/how_to_contribute/) section.
+For concrete contribution ideas, please see our
+[Ways to Contribute/What We Need Help With](http://pinaxproject.com/pinax/ways_to_contribute/) section.
+
+In case of any questions we recommend you join our [Pinax Slack team](http://slack.pinaxproject.com)
+and ping us there instead of creating an issue on GitHub. Creating issues on GitHub is of course
+also valid but we are usually able to help you faster if you ping us in Slack.
+
+We also highly recommend reading our blog post on [Open Source and Self-Care](http://blog.pinaxproject.com/2016/01/19/open-source-and-self-care/).
+
+## Code of Conduct
+
+In order to foster a kind, inclusive, and harassment-free community, the Pinax Project
+has a [code of conduct](http://pinaxproject.com/pinax/code_of_conduct/).
+We ask you to treat everyone as a smart human programmer that shares an interest in Python, Django, and Pinax with you.
 
 
-## About Pinax
+## Connect with Pinax
 
-Pinax is an open-source platform built on the Django Web Framework. It is an ecosystem of reusable Django apps, themes, and starter project templates. This collection can be found at http://pinaxproject.com.
+For updates and news regarding the Pinax Project, please follow us on Twitter [@pinaxproject](https://twitter.com/pinaxproject)
+and check out our [Pinax Project blog](http://blog.pinaxproject.com).
 
-The Pinax documentation is available at http://pinaxproject.com/pinax/. If you would like to help us improve our documentation or write more documentation, please join our Pinax Project Slack team and let us know!
 
-For updates and news regarding the Pinax Project, please follow us on Twitter at @pinaxproject and check out our blog http://blog.pinaxproject.com.
+## License
+
+Copyright (c) 2012-2018 James Tauber and contributors under the [MIT license](https://opensource.org/licenses/MIT).
