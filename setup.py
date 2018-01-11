@@ -1,5 +1,6 @@
 from setuptools import find_packages, setup
 
+VERSION = "2.0.1"
 LONG_DESCRIPTION = """
 .. image:: http://pinaxproject.com/pinax-design/patches/pinax-messages.svg
     :target: https://pypi.python.org/pypi/pinax-messages/
@@ -54,7 +55,7 @@ setup(
     description="a reusable private user messages application for Django",
     name="pinax-messages",
     long_description=LONG_DESCRIPTION,
-    version="2.0.0",
+    version=VERSION,
     url="http://github.com/pinax/pinax-messages/",
     license="MIT",
     packages=find_packages(),
