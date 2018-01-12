@@ -17,7 +17,6 @@
 
 * [About Pinax](#about-pinax)
 * [Overview](#overview)
-  * [History](#history)
   * [Supported Django and Python versions](#supported-django-and-python-versions)
 * [Documentation](#documentation)
   * [Installation](#installation)
@@ -25,6 +24,7 @@
   * [Template Tags](#template-tags-and-filters)
   * [Reference Guide](#reference-guide)
 * [Change Log](#change-log)
+* [History](#history)
 * [Contribute](#contribute)
 * [Code of Conduct](#code-of-conduct)
 * [Connect with Pinax](#connect-with-pinax)
@@ -41,10 +41,6 @@ Django apps, themes, and starter project templates. This collection can be found
 
 `pinax-messages` is an app for providing private user-to-user threaded messaging.
 
-#### History
-
-This app was formerly named `user-messages` but was renamed after being donated to Pinax from Eldarion.
-
 #### Supported Django and Python versions
 
 Django \ Python | 2.7 | 3.4 | 3.5 | 3.6
@@ -57,40 +53,35 @@ Django \ Python | 2.7 | 3.4 | 3.5 | 3.6
 
 ### Installation
 
-#### Install `pinax-messages`
-
-* Add `"pinax-messages"` to your `requirements.txt` file or install pinax-messages manually:
+To install pinax-messages:
 
 ```
 $ pip install pinax-messages
 ```
 
-* Add `"pinax.messages"` to your `INSTALLED_APPS` setting:
+Add `"pinax.messages"` to your `INSTALLED_APPS` setting:
 
-
+```python
     INSTALLED_APPS = (
-        ...
-        "pinax.messages"
-        ...
+        # other apps
+        "pinax.messages",
     )
+```
 
-#### Run Migrations
-
-* Run Django migrations to create `pinax-messages` database tables:
+Run Django migrations to create `pinax-messages` database tables:
 
 ```
 $ python manage.py migrate
 ```
 
-#### Hook Up URLs
+Finally, add `pinax.messages.urls` to your project urlpatterns:
 
-Add `pinax.messages.urls` to your project urlpatterns:
-
+```python
     urlpatterns = [
-        ...
+        # other urls
         url(r"^messages/", include("pinax.messages.urls", namespace="pinax_messages")),
-        ...
     ]
+```
 
 
 ### Usage
@@ -260,6 +251,11 @@ These URL names are available when using pinax-messages urls.py:
 
 ## Change Log
 
+### 2.0.1
+
+Update test config
+Update documentation
+
 ### 2.0.0
 
 Standardize documentation layout
@@ -293,6 +289,11 @@ Drop Django v1.8, v1.10 support
 ### 0.1
 
 - initial release
+
+
+## History
+
+This app was formerly named `user-messages` but was renamed after being donated to Pinax from Eldarion.
 
 
 ## Contribute
