@@ -253,13 +253,13 @@ These URL names are available when using pinax-messages urls.py:
 
 ### 2.0.1
 
-Update test config
-Update documentation
+* Update test config
+* Update documentation
 
 ### 2.0.0
 
-Standardize documentation layout
-Drop Django v1.8, v1.10 support
+* Standardize documentation layout
+* Drop Django v1.8, v1.10 support
 
 ### 1.2.0
 
