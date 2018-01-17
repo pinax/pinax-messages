@@ -55,22 +55,22 @@ Django \ Python | 2.7 | 3.4 | 3.5 | 3.6
 
 To install pinax-messages:
 
-```
+```commandline
 $ pip install pinax-messages
 ```
 
 Add `"pinax.messages"` to your `INSTALLED_APPS` setting:
 
 ```python
-    INSTALLED_APPS = (
-        # other apps
-        "pinax.messages",
-    )
+INSTALLED_APPS = [
+    # other apps
+    "pinax.messages",
+]
 ```
 
 Run Django migrations to create `pinax-messages` database tables:
 
-```
+```commandline
 $ python manage.py migrate
 ```
 
@@ -93,7 +93,7 @@ These snippets fall into three categories: view message inbox (all threads), vie
 
 Place this snippet wherever a "Message Inbox" link is needed for viewing user message inbox:
 
-```html
+```djangotemplate
 <a href="{% url 'pinax_messages:inbox' %}"><i class="fa fa-envelope"></i> {% trans "Message Inbox" %}</a>
 ```
 
@@ -101,7 +101,7 @@ Place this snippet wherever a "Message Inbox" link is needed for viewing user me
 
 Place this snippet wherever you have need to view a specific message thread:
 
-```html
+```djangotemplate
 <a href="{% url 'pinax_messages:thread_detail' thread.pk %}"><i class="fa fa-envelope"></i> {% trans "View Message Thread" %}</a>
 ```
 
@@ -109,7 +109,7 @@ Place this snippet wherever you have need to view a specific message thread:
 
 Add the following line to an object template in order to provide a button for messaging a user associated with `object`:
 
-```html
+```djangotemplate
 <a href="{% url "pinax_messages:message_user_create" user_id=object.user.id %}" class="btn btn-default">Message this user</a>
 ```
 
@@ -132,9 +132,9 @@ TEMPLATES = [
     {
         # ...
         "OPTIONS": {
-            # ...
+            # other options
             "context_processors": [
-                # ...
+                # other processors
                 "pinax.messages.context_processors.user_messages"
             ],
         },
@@ -162,7 +162,7 @@ Determines if a message thread has unread messages for a user.
 
 For instance if there are unread messages in a thread, change the CSS class accordingly:
 
-```html
+```djangotemplate
 {% load pinax_messages_tags %}
 
     <div class="thread {% if thread|unread:user %}unread{% endif %}">
@@ -178,7 +178,7 @@ Returns the number of unread threads for the user. Use for notifying a user of n
 
 For instance if there are unread messages in a thread, change the CSS class accordingly:
 
-```html
+```djangotemplate
 {% load pinax_messages_tags %}
 
     {% with user|unread_thread_count as user_unread %}
@@ -250,6 +250,14 @@ These URL names are available when using pinax-messages urls.py:
 
 
 ## Change Log
+
+### 2.0.2
+
+* Update CI config
+* Update MANIFEST.in
+* Add sorting guidance for 3rd-party app imports
+* Improve documentation markup
+* Remove pinax-theme-bootstrap from test requirements
 
 ### 2.0.1
 

@@ -82,7 +82,6 @@ class TestMessages(BaseTest):
                 "debug": True,
                 "context_processors": [
                     "django.contrib.auth.context_processors.auth",
-                    "pinax_theme_bootstrap.context_processors.theme",
                     "pinax.messages.context_processors.user_messages",
                 ]
             }
@@ -243,7 +242,7 @@ class TestTemplateTags(BaseTest):
         Message.new_message(
             self.brosner,
             [self.jtauber],
-            "Why did you break the internet?", "I demand to know.").thread
+            "Why did you break the internet?", "I demand to know.")
 
         tmpl = """
                {% load pinax_messages_tags %}
@@ -270,7 +269,7 @@ class TestTemplateTags(BaseTest):
         Message.new_message(
             self.brosner,
             [self.jtauber],
-            "Second message", "So there are two.").thread
+            "Second message", "So there are two.")
         tmpl = """
                {% load pinax_messages_tags %}
                {% if user|unread_thread_count %}{{ user|unread_thread_count }}{% endif %}
@@ -310,7 +309,7 @@ class TestTemplateTags(BaseTest):
         Message.new_message(
             self.brosner,
             [self.jtauber],
-            "Why did you break the internet?", "I demand to know.").thread
+            "Why did you break the internet?", "I demand to know.")
 
         tmpl = """
                {% load pinax_messages_tags %}

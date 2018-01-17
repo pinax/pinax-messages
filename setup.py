@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-VERSION = "2.0.1"
+VERSION = "2.0.2"
 LONG_DESCRIPTION = """
 .. image:: http://pinaxproject.com/pinax-design/patches/pinax-messages.svg
     :target: https://pypi.python.org/pypi/pinax-messages/
@@ -81,12 +81,11 @@ setup(
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
     install_requires=[
-        "django>=1.8",
-        "django-appconf>=1.0.1",
+        "django>=1.11",
+        "django-appconf>=1.0.2",
     ],
     tests_require=[
-        "django-test-plus>=1.0.11",
-        "pinax-theme-bootstrap>=7.10.1",
+        "django-test-plus>=1.0.22",
     ],
     test_suite="runtests.runtests",
     zip_safe=False

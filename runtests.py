@@ -13,8 +13,6 @@ DEFAULT_SETTINGS = dict(
         "django.contrib.contenttypes",
         "django.contrib.sites",
         "django.contrib.sessions",
-        "pinax_theme_bootstrap",
-        "bootstrapform",
         "pinax.messages",
         "pinax.messages.tests"
     ],
@@ -39,7 +37,6 @@ DEFAULT_SETTINGS = dict(
                 "debug": True,
                 "context_processors": [
                     "django.contrib.auth.context_processors.auth",
-                    "pinax_theme_bootstrap.context_processors.theme",
                     "pinax.messages.context_processors.user_messages",
                 ]
             }
