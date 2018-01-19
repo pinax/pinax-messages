@@ -13,6 +13,7 @@
 [![](http://slack.pinaxproject.com/badge.svg)](http://slack.pinaxproject.com/)
 [![](https://img.shields.io/badge/license-MIT-blue.svg)](https://pypi.python.org/pypi/pinax-messages/)
 
+
 ## Table of Contents
 
 * [About Pinax](#about-pinax)
@@ -30,10 +31,12 @@
 * [Connect with Pinax](#connect-with-pinax)
 * [License](#license)
 
+
 ## About Pinax
 
 Pinax is an open-source platform built on the Django Web Framework. It is an ecosystem of reusable
 Django apps, themes, and starter project templates. This collection can be found at http://pinaxproject.com.
+
 
 ## pinax-messages
 
@@ -55,7 +58,7 @@ Django \ Python | 2.7 | 3.4 | 3.5 | 3.6
 
 To install pinax-messages:
 
-```commandline
+```shell
 $ pip install pinax-messages
 ```
 
@@ -70,7 +73,7 @@ INSTALLED_APPS = [
 
 Run Django migrations to create `pinax-messages` database tables:
 
-```commandline
+```shell
 $ python manage.py migrate
 ```
 
@@ -83,7 +86,6 @@ Finally, add `pinax.messages.urls` to your project urlpatterns:
     ]
 ```
 
-
 ### Usage
 
 `pinax-messages` handles user-to-user private threaded messaging primarily by the inclusion of template snippets.
@@ -93,7 +95,7 @@ These snippets fall into three categories: view message inbox (all threads), vie
 
 Place this snippet wherever a "Message Inbox" link is needed for viewing user message inbox:
 
-```djangotemplate
+```django
 <a href="{% url 'pinax_messages:inbox' %}"><i class="fa fa-envelope"></i> {% trans "Message Inbox" %}</a>
 ```
 
@@ -101,7 +103,7 @@ Place this snippet wherever a "Message Inbox" link is needed for viewing user me
 
 Place this snippet wherever you have need to view a specific message thread:
 
-```djangotemplate
+```django
 <a href="{% url 'pinax_messages:thread_detail' thread.pk %}"><i class="fa fa-envelope"></i> {% trans "View Message Thread" %}</a>
 ```
 
@@ -109,7 +111,7 @@ Place this snippet wherever you have need to view a specific message thread:
 
 Add the following line to an object template in order to provide a button for messaging a user associated with `object`:
 
-```djangotemplate
+```django
 <a href="{% url "pinax_messages:message_user_create" user_id=object.user.id %}" class="btn btn-default">Message this user</a>
 ```
 
@@ -151,7 +153,6 @@ The following context variables are available, and work with the current authent
 
 [Example templates](https://github.com/pinax/pinax-theme-bootstrap/tree/master/pinax_theme_bootstrap/templates/pinax/messages) are available in the `pinax-theme-bootstrap` [project](https://github.com/pinax/pinax-theme-bootstrap/tree/master/pinax_theme_bootstrap).
 
-
 ### Template Tags and Filters
 
 #### unread
@@ -162,7 +163,7 @@ Determines if a message thread has unread messages for a user.
 
 For instance if there are unread messages in a thread, change the CSS class accordingly:
 
-```djangotemplate
+```django
 {% load pinax_messages_tags %}
 
     <div class="thread {% if thread|unread:user %}unread{% endif %}">
@@ -178,7 +179,7 @@ Returns the number of unread threads for the user. Use for notifying a user of n
 
 For instance if there are unread messages in a thread, change the CSS class accordingly:
 
-```djangotemplate
+```django
 {% load pinax_messages_tags %}
 
     {% with user|unread_thread_count as user_unread %}
@@ -316,6 +317,7 @@ and ping us there instead of creating an issue on GitHub. Creating issues on Git
 also valid but we are usually able to help you faster if you ping us in Slack.
 
 We also highly recommend reading our blog post on [Open Source and Self-Care](http://blog.pinaxproject.com/2016/01/19/open-source-and-self-care/).
+
 
 ## Code of Conduct
 
