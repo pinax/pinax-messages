@@ -24,6 +24,10 @@
   * [Usage](#usage)
   * [Template Tags](#template-tags-and-filters)
   * [Reference Guide](#reference-guide)
+    * [Views](#views)
+    * [Forms](#forms)
+    * [Templates](#templates)
+    * [Signals](#signals)
 * [Change Log](#change-log)
 * [History](#history)
 * [Contribute](#contribute)
@@ -149,9 +153,6 @@ The following context variables are available, and work with the current authent
 * `inbox_threads` — all message threads for current user
 * `unread_threads` — unread message threads for current user
 
-##### Templates
-
-[Example templates](https://github.com/pinax/pinax-theme-bootstrap/tree/master/pinax_theme_bootstrap/templates/pinax/messages) are available in the `pinax-theme-bootstrap` [project](https://github.com/pinax/pinax-theme-bootstrap/tree/master/pinax_theme_bootstrap).
 
 ### Template Tags and Filters
 
@@ -237,13 +238,38 @@ These URL names are available when using pinax-messages urls.py:
 
 #### Templates
 
-[Example templates](https://github.com/pinax/pinax-theme-bootstrap/tree/master/pinax_theme_bootstrap/templates/pinax/messages) are found in the `pinax-theme-bootstrap` [project](https://github.com/pinax/pinax-theme-bootstrap/tree/master/pinax_theme_bootstrap).
+Default templates are provided by the `pinax-templates` app in the
+[messages](https://github.com/pinax/pinax-templates/tree/master/pinax/templates/templates/pinax/messages)
+section of that project.
 
-`pinax/messages/inbox.html` — Displays inbox message threads
+Reference pinax-templates
+[installation instructions](https://github.com/pinax/pinax-templates/blob/master/README.md#installation)
+to include these templates in your project.
 
-`pinax/messages/thread_detail.html` — Show message thread and allow response
+##### Customizing Templates
 
-`pinax/messages/message_create.html` — New message form
+Override the default `pinax-templates` templates by copying them into your project
+subdirectory `pinax/messages/` on the template path and modifying as needed.
+
+For example if your project doesn't use Bootstrap, copy the desired templates
+then remove Bootstrap and Font Awesome class names from your copies.
+Remove class references like `class="btn btn-success"` and `class="icon icon-pencil"` as well as
+`bootstrap` from the `{% load i18n bootstrap %}` statement.
+Since `bootstrap` template tags and filters are no longer loaded, you'll also need to update
+`{{ form|bootstrap }}` to `{{ form }}` since the "bootstrap" filter is no longer available.
+
+##### `inbox.html`
+
+Displays inbox message threads.
+
+##### `thread_detail.html`
+
+Show message thread and allow response.
+
+##### `message_create.html`
+
+New message form.
+
 
 #### Signals
 
