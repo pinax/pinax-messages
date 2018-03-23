@@ -1,12 +1,9 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
-from django.db.models.query import QuerySet
 
 from .hooks import hookset
 from .models import Message
-
-from itertools import chain
 
 
 class UserModelChoiceField(forms.ModelChoiceField):
@@ -19,12 +16,6 @@ class UserModelMultipleChoiceField(forms.ModelMultipleChoiceField):
 
     def label_from_instance(self, obj):
         return hookset.display_name(obj)
-
-
-# class GroupModelMultipleChoiceField(forms.ModelMultipleChoiceField):
-
-#     def label_from_instance(self, obj):
-#         return hookset.display_name(obj)
 
 
 class NewMessageForm(forms.ModelForm):
