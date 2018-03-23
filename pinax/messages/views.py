@@ -8,7 +8,12 @@ from django.views.generic import (
     UpdateView
 )
 
-from .forms import MessageReplyForm, NewMessageForm, NewMessageFormMultiple
+from .forms import (
+    MessageReplyForm,
+    NewMessageForm,
+    NewMessageFormMultiple,
+    NewMessageFormGroup
+)
 from .models import Thread
 
 try:
@@ -89,6 +94,8 @@ class MessageCreateView(CreateView):
 
     def get_form_class(self):
         if self.form_class is None:
+            if self.kwargs.get("group", False):
+                return NewMessageFormGroup
             if self.kwargs.get("multiple", False):
                 return NewMessageFormMultiple
         return NewMessageForm
