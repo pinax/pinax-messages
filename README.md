@@ -52,7 +52,7 @@ Django apps, themes, and starter project templates. This collection can be found
 
 Django \ Python | 2.7 | 3.4 | 3.5 | 3.6
 --------------- | --- | --- | --- | ---
-1.11 |  *  |  *  |  *  |  *  
+1.11 |  *  |  *  |  *  |  *
 2.0  |     |  *  |  *  |  *
 
 
@@ -153,6 +153,18 @@ The following context variables are available, and work with the current authent
 * `inbox_threads` — all message threads for current user
 * `unread_threads` — unread message threads for current user
 
+#### Overriding forms
+
+You can override the form used to create and send the message by passing the form object in as kwargs:
+
+```python
+    from pinax.messages.forms import NewMessageFormMultipleGroup, NewMessageFormMultiple
+
+    url(r"^messages/create/$", MessageCreateView.as_view(),
+        {'form': NewMessageFormMultipleGroup}, name="message_create"),
+    url(r"^messages/create/(?P<user_id>\d+)/$", MessageCreateView.as_view(),
+        {'form': NewMessageFormMultiple}, name="message_user_create"),
+```
 
 ### Template Tags and Filters
 
@@ -188,7 +200,7 @@ For instance if there are unread messages in a thread, change the CSS class acco
         <a href="{% url 'pinax_messages:inbox' %}"><i class="fa fa-envelope"></i> {% trans "Messages" %}
             {% if user_unread %}<sup>{{ user_unread }}</sup>{% endif %}
         </a>
-    </li>        
+    </li>
     {% endwith %}
 ```
 

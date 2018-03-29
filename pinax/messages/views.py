@@ -12,7 +12,6 @@ from .forms import (
     MessageReplyForm,
     NewMessageForm,
     NewMessageFormMultiple,
-    NewMessageFormGroup
 )
 from .models import Thread
 
@@ -94,10 +93,11 @@ class MessageCreateView(CreateView):
 
     def get_form_class(self):
         if self.form_class is None:
-            if self.kwargs.get("group", False):
-                return NewMessageFormGroup
             if self.kwargs.get("multiple", False):
                 return NewMessageFormMultiple
+            form = self.kwargs.get("form", False)
+            if form:
+                return form
         return NewMessageForm
 
     def get_initial(self):

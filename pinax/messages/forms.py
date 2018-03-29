@@ -67,7 +67,15 @@ class NewMessageFormMultiple(forms.ModelForm):
         fields = ["to_user", "subject", "content"]
 
 
-class NewMessageFormGroup(forms.ModelForm):
+class NewMessageFormMultipleGroup(forms.ModelForm):
+    """
+        This form provides the ability to send to both multiple users and
+        multiple groups.
+
+        If a group or groups are selected, a lookup is performed to get all users
+        from the group(s) and send that list to Message.new_message().  If a user
+        or multiple users are also selected the user(s) will be added to the list.
+    """
     subject = forms.CharField()
     to_user = UserModelMultipleChoiceField(get_user_model().objects.none(),
         required=False)
@@ -77,7 +85,7 @@ class NewMessageFormGroup(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user")
-        super(NewMessageFormGroup, self).__init__(*args, **kwargs)
+        super(NewMessageFormMultipleGroup, self).__init__(*args, **kwargs)
         self.fields["to_user"].queryset = hookset.get_user_choices(self.user)
         if self.initial.get("to_user") is not None:
             qs = self.fields["to_user"].queryset.filter(pk__in=self.initial["to_user"])
@@ -88,7 +96,7 @@ class NewMessageFormGroup(forms.ModelForm):
             self.fields["to_group"].queryset = qs
 
     def clean(self):
-        cleaned_data = super(NewMessageFormGroup, self).clean()
+        cleaned_data = super(NewMessageFormMultipleGroup, self).clean()
         to_user = cleaned_data.get('to_user')
         to_group = cleaned_data.get('to_group')
 
