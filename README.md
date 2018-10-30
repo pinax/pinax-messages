@@ -153,7 +153,6 @@ The following context variables are available, and work with the current authent
 * `inbox_threads` — all message threads for current user
 * `unread_threads` — unread message threads for current user
 
-
 ### Template Tags and Filters
 
 #### unread
@@ -271,7 +270,6 @@ Show message thread and allow response.
 ##### `message_create.html`
 
 New message form.
-
 
 #### Signals
 
