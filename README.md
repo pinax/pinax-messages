@@ -22,7 +22,7 @@
 * [Documentation](#documentation)
   * [Installation](#installation)
   * [Usage](#usage)
-  * [Template Tags](#template-tags-and-filters)
+  * [Template Tags and Filters](#template-tags-and-filters)
   * [Reference Guide](#reference-guide)
     * [Views](#views)
     * [Forms](#forms)
