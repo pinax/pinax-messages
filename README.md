@@ -63,7 +63,7 @@ Django \ Python | 2.7 | 3.4 | 3.5 | 3.6
 To install pinax-messages:
 
 ```shell
-$ pip install pinax-messages
+    $ pip install pinax-messages
 ```
 
 Add `"pinax.messages"` to your `INSTALLED_APPS` setting:
@@ -78,7 +78,7 @@ INSTALLED_APPS = [
 Run Django migrations to create `pinax-messages` database tables:
 
 ```shell
-$ python manage.py migrate
+    $ python manage.py migrate
 ```
 
 Add `pinax.messages.urls` to your project urlpatterns:
