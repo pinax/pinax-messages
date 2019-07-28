@@ -81,7 +81,7 @@ Run Django migrations to create `pinax-messages` database tables:
 $ python manage.py migrate
 ```
 
-Finally, add `pinax.messages.urls` to your project urlpatterns:
+Add `pinax.messages.urls` to your project urlpatterns:
 
 ```python
     urlpatterns = [
