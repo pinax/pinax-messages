@@ -1,16 +1,12 @@
-from __future__ import unicode_literals
-
 from django.conf import settings
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
-from django.utils.encoding import python_2_unicode_compatible
 
 from .signals import message_sent
 from .utils import cached_attribute
 
 
-@python_2_unicode_compatible
 class Thread(models.Model):
 
     subject = models.CharField(max_length=150)

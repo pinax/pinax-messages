@@ -5,7 +5,7 @@ from django.views.generic import (
     CreateView,
     DeleteView,
     TemplateView,
-    UpdateView
+    UpdateView,
 )
 
 from .forms import MessageReplyForm, NewMessageForm, NewMessageFormMultiple
