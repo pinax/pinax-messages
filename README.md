@@ -185,7 +185,7 @@ For instance if there are unread messages in a thread, change the CSS class acco
 
 #### unread_thread_count
 
-Returns the number of unread threads for the user. Use for notifying a user of new messages, for example in _account_bar.html
+Returns the number of unread threads for the user. Use for notifying a user of new messages, for example in _account_bar.html_
 
 **Argument**: `user`
 
