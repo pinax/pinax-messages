@@ -2,7 +2,7 @@ from functools import wraps
 
 
 def cached_attribute(func):
-    cache_name = "_%s" % func.__name__
+    cache_name = f"_{func.__name__}"
 
     @wraps(func)
     def inner(self, *args, **kwargs):

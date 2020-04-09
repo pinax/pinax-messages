@@ -76,7 +76,7 @@ class TestMessages(BaseTest):
     TEMPLATES=[
         {
             "BACKEND": "django.template.backends.django.DjangoTemplates",
-            "DIRS": ["%s/templates" % os.path.abspath(os.path.dirname(__file__))],
+            "DIRS": [f"{os.path.abspath(os.path.dirname(__file__))}/templates"],
             "APP_DIRS": False,
             "OPTIONS": {
                 "debug": True,

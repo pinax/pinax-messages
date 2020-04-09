@@ -29,10 +29,7 @@ class Thread(models.Model):
         )
 
     def __str__(self):
-        return "{}: {}".format(
-            self.subject,
-            ", ".join([str(user) for user in self.users.all()])
-        )
+        return f"{self.subject}: {', '.join([str(user) for user in self.users.all()])}"
 
     def get_absolute_url(self):
         return reverse("pinax_messages:thread_detail", args=[self.pk])
