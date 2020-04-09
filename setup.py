@@ -34,7 +34,7 @@ Pinax Messages
 
 \
 
-``pinax-messages`` is a well tested, documented, and proven solution for any site that
+`pinax-messages` is a well tested, documented, and proven solution for any site that
 that wants to support private user-to-user messaging.
 
 Supported Django and Python Versions
