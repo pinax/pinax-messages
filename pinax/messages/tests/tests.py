@@ -10,7 +10,7 @@ from ..models import Message, Thread
 from .test import TestCase
 
 
-class TestCaseMixin(object):
+class TestCaseMixin:
 
     def assert_renders(self, tmpl, context, value):
         tmpl = Template(tmpl)
