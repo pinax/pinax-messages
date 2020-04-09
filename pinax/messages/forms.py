@@ -25,7 +25,7 @@ class NewMessageForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user")
-        super(NewMessageForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields["to_user"].queryset = hookset.get_user_choices(self.user)
         if self.initial.get("to_user") is not None:
             qs = self.fields["to_user"].queryset.filter(pk=self.initial["to_user"])
@@ -49,7 +49,7 @@ class NewMessageFormMultiple(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user")
-        super(NewMessageFormMultiple, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields["to_user"].queryset = hookset.get_user_choices(self.user)
         if self.initial.get("to_user") is not None:
             qs = self.fields["to_user"].queryset.filter(pk__in=self.initial["to_user"])
@@ -70,7 +70,7 @@ class MessageReplyForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.thread = kwargs.pop("thread")
         self.user = kwargs.pop("user")
-        super(MessageReplyForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def save(self, commit=True):
         return Message.new_reply(

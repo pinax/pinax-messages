@@ -25,10 +25,10 @@ class InboxView(TemplateView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(InboxView, self).dispatch(*args, **kwargs)
+        return super().dispatch(*args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        context = super(InboxView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         if self.kwargs.get("deleted", None):
             threads = Thread.ordered(Thread.deleted(self.request.user))
             folder = "deleted"
@@ -56,15 +56,15 @@ class ThreadView(UpdateView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(ThreadView, self).dispatch(*args, **kwargs)
+        return super().dispatch(*args, **kwargs)
 
     def get_queryset(self):
-        qs = super(ThreadView, self).get_queryset()
+        qs = super().get_queryset()
         qs = qs.filter(userthread__user=self.request.user).distinct()
         return qs
 
     def get_form_kwargs(self):
-        kwargs = super(ThreadView, self).get_form_kwargs()
+        kwargs = super().get_form_kwargs()
         kwargs.update({
             "user": self.request.user,
             "thread": self.object
@@ -72,7 +72,7 @@ class ThreadView(UpdateView):
         return kwargs
 
     def get(self, request, *args, **kwargs):
-        response = super(ThreadView, self).get(request, *args, **kwargs)
+        response = super().get(request, *args, **kwargs)
         self.object.userthread_set.filter(user=request.user).update(unread=False)
         return response
 
@@ -85,7 +85,7 @@ class MessageCreateView(CreateView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(MessageCreateView, self).dispatch(*args, **kwargs)
+        return super().dispatch(*args, **kwargs)
 
     def get_form_class(self):
         if self.form_class is None:
@@ -104,7 +104,7 @@ class MessageCreateView(CreateView):
         return {"to_user": user_id}
 
     def get_form_kwargs(self):
-        kwargs = super(MessageCreateView, self).get_form_kwargs()
+        kwargs = super().get_form_kwargs()
         kwargs.update({
             "user": self.request.user,
         })
@@ -121,7 +121,7 @@ class ThreadDeleteView(DeleteView):
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(ThreadDeleteView, self).dispatch(*args, **kwargs)
+        return super().dispatch(*args, **kwargs)
 
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
