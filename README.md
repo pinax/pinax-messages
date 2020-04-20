@@ -59,7 +59,7 @@ Where you can find what you need:
 
 `pinax-messages` is an app for providing private user-to-user threaded messaging.
 
-#### Supported Django and Python versions
+#### Supported Django and Python Versions
 
 Django / Python | 3.6 | 3.7 | 3.8
 --------------- | --- | --- | ---
