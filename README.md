@@ -39,8 +39,7 @@
 
 ## About Pinax
 
-Pinax is an open-source platform built on the Django Web Framework. It is an ecosystem of reusable
-Django apps, themes, and starter project templates. This collection can be found at http://pinaxproject.com.
+Pinax is an open-source platform built on the Django Web Framework. It is an ecosystem of reusable Django apps, themes, and starter project templates. This collection can be found at http://pinaxproject.com.
 
 
 ## Important Links
@@ -362,8 +361,7 @@ In order to foster a kind, inclusive, and harassment-free community, the Pinax P
 
 ## Connect with Pinax
 
-For updates and news regarding the Pinax Project, please follow us on Twitter [@pinaxproject](https://twitter.com/pinaxproject)
-and check out our [Pinax Project blog](http://blog.pinaxproject.com).
+For updates and news regarding the Pinax Project, please follow us on Twitter [@pinaxproject](https://twitter.com/pinaxproject) and check out our [Pinax Project blog](http://blog.pinaxproject.com).
 
 
 ## License
