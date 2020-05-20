@@ -80,10 +80,10 @@ setup(
     ],
     install_requires=[
         "django>=2.2",
-        "django-appconf>=1.0.4",
+        "django-appconf>=1.0.2",
     ],
     tests_require=[
-        "django-test-plus>=1.4.0",
+        "django-test-plus>=1.0.22",
     ],
     test_suite="runtests.runtests",
     zip_safe=False
