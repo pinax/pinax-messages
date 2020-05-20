@@ -10,7 +10,7 @@ from ..models import Message, Thread
 from .test import TestCase
 
 
-class TestCaseMixin(object):
+class TestCaseMixin:
 
     def assert_renders(self, tmpl, context, value):
         tmpl = Template(tmpl)
@@ -76,7 +76,7 @@ class TestMessages(BaseTest):
     TEMPLATES=[
         {
             "BACKEND": "django.template.backends.django.DjangoTemplates",
-            "DIRS": ["%s/templates" % os.path.abspath(os.path.dirname(__file__))],
+            "DIRS": [f"{os.path.abspath(os.path.dirname(__file__))}/templates"],
             "APP_DIRS": False,
             "OPTIONS": {
                 "debug": True,
@@ -138,7 +138,7 @@ class TestMessageViews(BaseTest):
             # <option value="2" selected>jtauber</option>
             #    versus XHTML syntax:
             # <option value="2" selected="selected">jtauber</option>
-            regex = b"selected(\")*>jtauber</option>"
+            regex = b'selected(")*>jtauber</option>'
             try:
                 self.assertRegex(self.last_response.content, regex)
             except AttributeError:

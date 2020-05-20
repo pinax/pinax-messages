@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 
 
-class DefaultHookSet(object):
+class DefaultHookSet:
 
     def display_name(self, user):
         return str(user)
@@ -10,7 +10,7 @@ class DefaultHookSet(object):
         return get_user_model().objects.exclude(id=user.id)
 
 
-class HookProxy(object):
+class HookProxy:
     _settings = None
 
     def load_settings(self):

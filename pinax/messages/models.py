@@ -1,16 +1,12 @@
-from __future__ import unicode_literals
-
 from django.conf import settings
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
-from django.utils.encoding import python_2_unicode_compatible
 
 from .signals import message_sent
 from .utils import cached_attribute
 
 
-@python_2_unicode_compatible
 class Thread(models.Model):
 
     subject = models.CharField(max_length=150)
@@ -33,10 +29,7 @@ class Thread(models.Model):
         )
 
     def __str__(self):
-        return "{}: {}".format(
-            self.subject,
-            ", ".join([str(user) for user in self.users.all()])
-        )
+        return f"{self.subject}: {', '.join([str(user) for user in self.users.all()])}"
 
     def get_absolute_url(self):
         return reverse("pinax_messages:thread_detail", args=[self.pk])
