@@ -1,6 +1,5 @@
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
-from django.utils.decorators import method_decorator
 from django.views.generic import (
     CreateView,
     DeleteView,
@@ -10,22 +9,14 @@ from django.views.generic import (
 
 from .forms import MessageReplyForm, NewMessageForm, NewMessageFormMultiple
 from .models import Thread
-
-try:
-    from account.decorators import login_required
-except:  # noqa
-    from django.contrib.auth.decorators import login_required
+from .mixins import PinaxMessageBaseAuthMixin
 
 
-class InboxView(TemplateView):
+class InboxView(PinaxMessageBaseAuthMixin, TemplateView):
     """
     View inbox thread list.
     """
     template_name = "pinax/messages/inbox.html"
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -44,7 +35,7 @@ class InboxView(TemplateView):
         return context
 
 
-class ThreadView(UpdateView):
+class ThreadView(PinaxMessageBaseAuthMixin, UpdateView):
     """
     View a single Thread or POST a reply.
     """
@@ -53,10 +44,6 @@ class ThreadView(UpdateView):
     context_object_name = "thread"
     template_name = "pinax/messages/thread_detail.html"
     success_url = reverse_lazy("pinax_messages:inbox")
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
 
     def get_queryset(self):
         qs = super().get_queryset()
@@ -77,15 +64,11 @@ class ThreadView(UpdateView):
         return response
 
 
-class MessageCreateView(CreateView):
+class MessageCreateView(PinaxMessageBaseAuthMixin, CreateView):
     """
     Create a new thread message.
     """
     template_name = "pinax/messages/message_create.html"
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
 
     def get_form_class(self):
         if self.form_class is None:
@@ -111,17 +94,13 @@ class MessageCreateView(CreateView):
         return kwargs
 
 
-class ThreadDeleteView(DeleteView):
+class ThreadDeleteView(PinaxMessageBaseAuthMixin, DeleteView):
     """
     Delete a thread.
     """
     model = Thread
     success_url = reverse_lazy("pinax_messages:inbox")
     template_name = "pinax/messages/thread_confirm_delete.html"
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
 
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
