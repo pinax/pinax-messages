@@ -39,7 +39,6 @@ class Thread(models.Model):
     def first_message(self):
         return self.messages.all()[0]
 
-    @property
     def earliest_message(self, user_to_exclude=None):
         """
         :param user_to_exclude: Exclude the messages from a given user
@@ -50,7 +49,6 @@ class Thread(models.Model):
         except Message.DoesNotExist:
             return
 
-    @property
     def last_message(self, user_to_exclude=None):
         """
         :param user_to_exclude: Exclude the messages from a given user
