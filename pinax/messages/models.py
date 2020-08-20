@@ -39,6 +39,26 @@ class Thread(models.Model):
     def first_message(self):
         return self.messages.all()[0]
 
+    def earliest_message(self, user_to_exclude=None):
+        """
+        :param user_to_exclude: Exclude the messages from a given user
+        Returns the earliest message sent
+        """
+        try:
+            return self.messages.exclude(sender=user_to_exclude).earliest('sent_at')
+        except Message.DoesNotExist:
+            return
+
+    def last_message(self, user_to_exclude=None):
+        """
+        :param user_to_exclude: Exclude the messages from a given user
+        Returns the earliest message of the thread
+        """
+        try:
+            return self.messages.exclude(sender=user_to_exclude).latest('sent_at')
+        except Message.DoesNotExist:
+            return
+
     @property
     @cached_attribute
     def latest_message(self):
