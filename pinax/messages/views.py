@@ -89,8 +89,15 @@ class MessageCreateView(CreateView):
 
     def get_form_class(self):
         if self.form_class is None:
+            """ keeping for backwards compatibility """
             if self.kwargs.get("multiple", False):
                 return NewMessageFormMultiple
+
+            """ check to see if a form was defined in urls """
+            form = self.kwargs.get('form', False)
+            if form:
+                return form
+
         return NewMessageForm
 
     def get_initial(self):
