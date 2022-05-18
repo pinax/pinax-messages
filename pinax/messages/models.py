@@ -98,7 +98,7 @@ class Message(models.Model):
         thread = Thread.objects.create(subject=subject)
         for user in to_users:
             thread.userthread_set.create(user=user, deleted=False, unread=True)
-        thread.userthread_set.create(user=from_user, deleted=True, unread=False)
+        # thread.userthread_set.create(user=from_user, deleted=True, unread=False)
         msg = cls.objects.create(thread=thread, sender=from_user, content=content)
         message_sent.send(sender=cls, message=msg, thread=thread, reply=False)
         return msg
