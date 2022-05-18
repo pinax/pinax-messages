@@ -82,6 +82,7 @@ class MessageCreateView(CreateView):
     Create a new thread message.
     """
     template_name = "pinax/messages/message_create.html"
+    success_url = reverse_lazy("pinax_messages:inbox")
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
