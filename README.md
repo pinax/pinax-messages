@@ -61,10 +61,14 @@ Where you can find what you need:
 
 #### Supported Django and Python Versions
 
-Django / Python | 3.6 | 3.7 | 3.8
---------------- | --- | --- | ---
-2.2  |  *  |  *  |  *
-3.0  |  *  |  *  |  *
+Django / Python | 3.6 | 3.7 | 3.8 | 3.9 | 3.10 | 3.11 |
+--------------- |-----|-----| --- | --- |------|------|
+2.2             | *   | *   |  *  |  *  |      |      |
+3.0             | *   | *   |  *  |  *  |      |      |
+3.1             | *   | *   |  *  |  *  |      |      |
+3.2             | *   | *   |  *  |  *  | *    |      |
+4.0             |     |     |  *  |  *  | *    |      |
+4.1             |     |     |  *  |  *  | *    | *    |
 
 
 ## Documentation
@@ -97,7 +101,7 @@ Add `pinax.messages.urls` to your project urlpatterns:
 ```python
     urlpatterns = [
         # other urls
-        url(r"^messages/", include("pinax.messages.urls", namespace="pinax_messages")),
+        path("messages/", include("pinax.messages.urls", namespace="pinax_messages")),
     ]
 ```
 

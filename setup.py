@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-VERSION = "3.0.0"
+VERSION = "3.1.0"
 LONG_DESCRIPTION = """
 .. image:: http://pinaxproject.com/pinax-design/patches/pinax-messages.svg
     :target: https://pypi.python.org/pypi/pinax-messages/
@@ -40,13 +40,21 @@ that wants to support private user-to-user messaging.
 Supported Django and Python Versions
 ------------------------------------
 
-+-----------------+-----+-----+-----+
-| Django / Python | 3.6 | 3.7 | 3.8 |
-+=================+=====+=====+=====+
-|  2.2            |  *  |  *  |  *  |
-+-----------------+-----+-----+-----+
-|  3.0            |  *  |  *  |  *  |
-+-----------------+-----+-----+-----+
++-----------------+-----+-----+-----+-----+------+------+
+| Django / Python | 3.6 | 3.7 | 3.8 | 3.9 | 3.10 | 3.11 |
++=================+=====+=====+=====+=====+======+======+
+|  2.2            |  *  |  *  |  *  |  *  |      |      |
++-----------------+-----+-----+-----+-----+------+------+
+|  3.0            |  *  |  *  |  *  |  *  |      |      |
++-----------------+-----+-----+-----+-----+------+------+
+|  3.1            |  *  |  *  |  *  |  *  |      |      |
++-----------------+-----+-----+-----+-----+------+------+
+|  3.2            |  *  |  *  |  *  |  *  |  *   |      |
++-----------------+-----+-----+-----+-----+------+------+
+|  4.0            |     |     |  *  |  *  |  *   |      |
++-----------------+-----+-----+-----+-----+------+------+
+|  4.1            |     |     |  *  |  *  |  *   |  *   |
++-----------------+-----+-----+-----+-----+------+------+
 """
 
 setup(
@@ -68,6 +76,10 @@ setup(
         "Framework :: Django",
         "Framework :: Django :: 2.2",
         "Framework :: Django :: 3.0",
+        "Framework :: Django :: 3.1",
+        "Framework :: Django :: 3.2",
+        "Framework :: Django :: 4.0",
+        "Framework :: Django :: 4.1",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
@@ -76,6 +88,9 @@ setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
     install_requires=[
