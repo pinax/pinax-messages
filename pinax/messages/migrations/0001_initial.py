@@ -14,42 +14,83 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Message',
+            name="Message",
             fields=[
-                ('id', models.AutoField(auto_created=True, serialize=False, verbose_name='ID', primary_key=True)),
-                ('sent_at', models.DateTimeField(default=django.utils.timezone.now)),
-                ('content', models.TextField()),
-                ('sender', models.ForeignKey(to=settings.AUTH_USER_MODEL, related_name='sent_messages', on_delete=models.CASCADE)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        serialize=False,
+                        verbose_name="ID",
+                        primary_key=True,
+                    ),
+                ),
+                ("sent_at", models.DateTimeField(default=django.utils.timezone.now)),
+                ("content", models.TextField()),
+                (
+                    "sender",
+                    models.ForeignKey(
+                        to=settings.AUTH_USER_MODEL,
+                        related_name="sent_messages",
+                        on_delete=models.CASCADE,
+                    ),
+                ),
             ],
             options={
-                'ordering': ('sent_at',),
+                "ordering": ("sent_at",),
             },
         ),
         migrations.CreateModel(
-            name='Thread',
+            name="Thread",
             fields=[
-                ('id', models.AutoField(auto_created=True, serialize=False, verbose_name='ID', primary_key=True)),
-                ('subject', models.CharField(max_length=150)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        serialize=False,
+                        verbose_name="ID",
+                        primary_key=True,
+                    ),
+                ),
+                ("subject", models.CharField(max_length=150)),
             ],
         ),
         migrations.CreateModel(
-            name='UserThread',
+            name="UserThread",
             fields=[
-                ('id', models.AutoField(auto_created=True, serialize=False, verbose_name='ID', primary_key=True)),
-                ('unread', models.BooleanField()),
-                ('deleted', models.BooleanField()),
-                ('thread', models.ForeignKey(to='pinax_messages.Thread', on_delete=models.CASCADE)),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        serialize=False,
+                        verbose_name="ID",
+                        primary_key=True,
+                    ),
+                ),
+                ("unread", models.BooleanField()),
+                ("deleted", models.BooleanField()),
+                (
+                    "thread",
+                    models.ForeignKey(to="pinax_messages.Thread", on_delete=models.CASCADE),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE),
+                ),
             ],
         ),
         migrations.AddField(
-            model_name='thread',
-            name='users',
-            field=models.ManyToManyField(through='pinax_messages.UserThread', to=settings.AUTH_USER_MODEL),
+            model_name="thread",
+            name="users",
+            field=models.ManyToManyField(through="pinax_messages.UserThread", to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
-            model_name='message',
-            name='thread',
-            field=models.ForeignKey(to='pinax_messages.Thread', related_name='messages', on_delete=models.CASCADE),
+            model_name="message",
+            name="thread",
+            field=models.ForeignKey(
+                to="pinax_messages.Thread",
+                related_name="messages",
+                on_delete=models.CASCADE,
+            ),
         ),
     ]

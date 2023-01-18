@@ -19,11 +19,7 @@ class ThreadManager(models.Manager):
         return sorted(threads_list, key=lambda thread: thread.latest_message.sent_at, reverse=True)
 
     def unread(self, user) -> QuerySet:
-        return self.filter(
-            userthread__user=user,
-            userthread__unread=True,
-            userthread__deleted=False
-        ).distinct()
+        return self.filter(userthread__user=user, userthread__unread=True, userthread__deleted=False).distinct()
 
     def sorted_unread(self, user) -> List["Thread"]:
         unread = self.unread(user)
@@ -135,12 +131,17 @@ class MessageManager(models.Manager):
 class Message(models.Model):
     objects = MessageManager()
 
-    thread = models.ForeignKey("Thread", related_name="messages", on_delete=models.CASCADE, verbose_name=_("thread"))
+    thread = models.ForeignKey(
+        "Thread",
+        related_name="messages",
+        on_delete=models.CASCADE,
+        verbose_name=_("thread"),
+    )
     sender = models.ForeignKey(
         UserModel,
         related_name="sent_messages",
         on_delete=models.CASCADE,
-        verbose_name=_("sender")
+        verbose_name=_("sender"),
     )
     sent_at = models.DateTimeField(_("sent at"), default=timezone.now)
     content = models.TextField(_("content"))

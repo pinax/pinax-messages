@@ -27,6 +27,7 @@ class ThreadView(UpdateView):
     """
     View a single Thread or POST a reply.
     """
+
     model = Thread
     form_class = MessageReplyForm
     context_object_name = "thread"
@@ -44,10 +45,7 @@ class ThreadView(UpdateView):
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs.update({
-            "user": self.request.user,
-            "thread": self.object
-        })
+        kwargs.update({"user": self.request.user, "thread": self.object})
         return kwargs
 
     def get(self, request, *args, **kwargs):
@@ -59,6 +57,7 @@ class MessageCreateView(CreateView):
     """
     Create a new thread message.
     """
+
     form_class = NewMessageForm
     template_name = "pinax/messages/message_create.html"
 
@@ -74,9 +73,11 @@ class MessageCreateView(CreateView):
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs.update({
-            "user": self.request.user,
-        })
+        kwargs.update(
+            {
+                "user": self.request.user,
+            }
+        )
         return kwargs
 
 
@@ -84,6 +85,7 @@ class ThreadDeleteView(DeleteView):
     """
     Delete a thread.
     """
+
     model = Thread
     success_url = reverse_lazy("pinax_messages:inbox")
     template_name = "pinax/messages/thread_confirm_delete.html"

@@ -11,4 +11,5 @@ def cached_attribute(func):
         val = func(self, *args, **kwargs)
         setattr(self, cache_name, val)
         return val
+
     return inner

@@ -8,7 +8,7 @@ from appconf import AppConf
 
 def load_path_attr(path):
     i = path.rfind(".")
-    module, attr = path[:i], path[i + 1:]
+    module, attr = path[:i], path[i + 1 :]
     try:
         mod = importlib.import_module(module)
     except ImportError as e:
