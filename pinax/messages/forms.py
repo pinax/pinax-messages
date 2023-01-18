@@ -1,69 +1,35 @@
 from django import forms
 from django.contrib.auth import get_user_model
+from django.utils.translation import gettext_lazy as _
 
-from .hooks import hookset
 from .models import Message
 
 
-class UserModelChoiceField(forms.ModelChoiceField):
-
-    def label_from_instance(self, obj):
-        return hookset.display_name(obj)
-
-
-class UserModelMultipleChoiceField(forms.ModelMultipleChoiceField):
-
-    def label_from_instance(self, obj):
-        return hookset.display_name(obj)
+UserModel = get_user_model()
 
 
 class NewMessageForm(forms.ModelForm):
-
-    subject = forms.CharField()
-    to_user = UserModelChoiceField(queryset=get_user_model().objects.none())
-    content = forms.CharField(widget=forms.Textarea)
-
-    def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop("user")
-        super().__init__(*args, **kwargs)
-        self.fields["to_user"].queryset = hookset.get_user_choices(self.user)
-        if self.initial.get("to_user") is not None:
-            qs = self.fields["to_user"].queryset.filter(pk=self.initial["to_user"])
-            self.fields["to_user"].queryset = qs
-
-    def save(self, commit=True):
-        data = self.cleaned_data
-        return Message.new_message(
-            self.user, [data["to_user"]], data["subject"], data["content"]
-        )
-
-    class Meta:
-        model = Message
-        fields = ["to_user", "subject", "content"]
-
-
-class NewMessageFormMultiple(forms.ModelForm):
-    subject = forms.CharField()
-    to_user = UserModelMultipleChoiceField(get_user_model().objects.none())
-    content = forms.CharField(widget=forms.Textarea)
+    to_users = forms.ModelMultipleChoiceField(label=_("Recipients"), queryset=UserModel.objects.none())
+    subject = forms.CharField(label=_("Subject"))
+    content = forms.CharField(label=_("Content"), widget=forms.Textarea)
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user")
         super().__init__(*args, **kwargs)
-        self.fields["to_user"].queryset = hookset.get_user_choices(self.user)
-        if self.initial.get("to_user") is not None:
-            qs = self.fields["to_user"].queryset.filter(pk__in=self.initial["to_user"])
-            self.fields["to_user"].queryset = qs
+
+        self.fields["to_users"].queryset = UserModel.objects.exclude(self.user).exclude(username="AnonymousUser").exclude(is_active=False)
+
+        if self.initial.get("to_users") is not None:
+            qs = self.fields["to_users"].queryset.filter(pk__in=self.initial["to_users"])
+            self.fields["to_users"].queryset = qs
 
     def save(self, commit=True):
         data = self.cleaned_data
-        return Message.new_message(
-            self.user, data["to_user"], data["subject"], data["content"]
-        )
+        return Message.objects.new_message(self.user, data["to_users"], data["subject"], data["content"])
 
     class Meta:
         model = Message
-        fields = ["to_user", "subject", "content"]
+        fields = ("to_users", "subject", "content")
 
 
 class MessageReplyForm(forms.ModelForm):
@@ -73,10 +39,8 @@ class MessageReplyForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
     def save(self, commit=True):
-        return Message.new_reply(
-            self.thread, self.user, self.cleaned_data["content"]
-        )
+        return Message.objects.new_reply(self.thread, self.user, self.cleaned_data["content"])
 
     class Meta:
         model = Message
-        fields = ["content"]
+        fields = ("content",)

@@ -2,8 +2,7 @@ from .models import Thread
 
 
 def user_messages(request):
-    c = {}
+    context = {}
     if request.user.is_authenticated:
-        c["inbox_threads"] = Thread.inbox(request.user)
-        c["unread_threads"] = Thread.unread(request.user)
-    return c
+        context["inbox_count"] = Thread.objects.unread_threads(request.user).count()
+    return context
