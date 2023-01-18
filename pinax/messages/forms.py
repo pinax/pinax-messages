@@ -19,7 +19,7 @@ class NewMessageForm(forms.ModelForm):
 
         self.fields["to_users"].queryset = UserModel.objects.exclude(pk=self.user.pk).exclude(username="AnonymousUser").exclude(is_active=False)
 
-        if self.initial.get("to_users") is not None:
+        if self.initial.get("to_users"):
             qs = self.fields["to_users"].queryset.filter(pk__in=self.initial["to_users"])
             self.fields["to_users"].queryset = qs
 
